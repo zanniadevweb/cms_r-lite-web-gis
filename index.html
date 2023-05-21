@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<title>R.-LITE-WEB-GIS</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="icon" href="https://cdn.onlinewebfonts.com/svg/img_309353.png">
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-menu-visible">
+		</br>
+		<h3 class="major">R.-LITE-WEB-GIS - Software made by Alexandre Zanni</h3>
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css" />
+		<script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"></script>
+		<link rel="stylesheet" type="text/css" href="assets/css/style.css" />
+		<div id="map_research" style="z-index: 0"></div>
+		 </br>
+		 </br>
+
+			<div id="page-wrapper">
+
+					<header id="header" class="alt">
+						<h1><a href="index.html">Alexandre ZANNI</a></h1>
+						<nav>
+							<a href="#menu">Menu</a>
+						</nav>
+					</header>
+
+					<nav id="menu">
+						<div class="inner">
+							<h2>Menu</h2>
+							<ul class="links">
+								<li><b>1. Charger CSV : </b><input id="fileInput" type="file" accept=".csv" onchange="readFile(this)"></li></br>
+								<li><button id="fileButton" disabled>Enregistrer Fichier CSV</button></li></br>
+								<li><button onclick="downloadCsvTemplate()">Télécharger Template CSV</button></li></br>
+
+								<li><b>2. Charger Polygones : </b><input id="filePolygonsInput" type="file" accept=".txt" onchange="readFilePolygons(this)" disabled></li></br>
+								<li><button id="filePolygonsButton" disabled onclick="downloadPolygonFile()">Enregistrer Fichier des polygones</button></li></br>
+								<li><button id="polygonsTemplateButton" onclick="downloadPolygonsTemplate()" disabled>Télécharger Template Polygones</button></li></br>
+
+								<li><b>3. Exporter carte pour le Web au format : </b>
+									<select id="selectExportForWebAction" disabled>
+										<option value="0">Points HTML (+ Polygones ?)</option>
+										<option value="1">Points KML Google Earth</option>
+									</select>
+								</li></br>
+								<li><button id="exportForWebButton" onclick="downloadExportForWeb()" disabled>Télécharger Fichier d'export</button></li></br>
+
+								<li><button disabled style="display: none">Générer HTML Carte (A faire)</button></li></br>
+							</ul>
+							<a href="#" class="close">Close</a>
+						</div>
+					</nav>
+
+					Action curseur sur carte :
+					<select id="selectMapPinPointAction" onchange="changeMapCursorPointer()" style="display: inline;width:15%">
+						<option value="0">Rien</option>
+						<option id="optionCreatePoint" value="1" style="display: none;">Création de points</option>
+						<option id="optionCreatePolygon" value="2" style="display: none;">Création de polygones</option>
+					</select>
+					<button id="pinPointButton" onclick="saveCurrPinPoint()" disabled>Sauvegarder Point Courant</button>
+					<button id="pinPointsPolygonButton" onclick="saveCurrPinPointsPolygon()" disabled>Sauvegarder Polygone Courant</button></br>
+					<div id="inputCreatedPinPointLabel" style="display:none;">Valeur point courant : <input id="inputCreatedPinPoint" type="text" disabled style="display:none;"></div>
+					<div id="inputCreatedAssociationPinPointToIdLabel" style="display: none;">ID associé : <input id="inputCreatedAssociationPinPointToId" val="1" type="number" min="0" step="1" style="display: none;background:#858585;"></div>
+					<div id="inputSavedPinPointsLabel" style="display: none">Valeur point sauvegardé : <input id="inputSavedPinPoints" type="text" disabled style="display: none"></div>
+					<div id="inputPolygonColorLabel" style="display: none;">Couleur du polygone ( <a href="https://htmlcolorcodes.com/" target="_blank">#hexcode</a>) : <input id="inputPolygonColor" type="text" val="1" placeholder="0000FF" style="display: none;"></div>
+					<div id="inputPolygonTooltipLabel" style="display: none;">Label du polygone : <input id="inputPolygonTooltip" type="text" val="1" placeholder="Default Polygon Label" style="display: none;"></div>
+					<div id="inputSavedPinPointsPolygonsLabel" style="display: none">Valeurs polygone sauvegardé : <input id="inputSavedPinPointsPolygons" type="text" disabled style="display: none"></div>
+					</br>
+					<input id="tmpFileContent" type="text" style="display: none">
+					<input id="tmpFilePolygonsContent" type="text" style="display: none">
+
+					<section id="wrapper">
+						<div class="inner">
+							</br>
+							<h3 class="major">Research Inventory :</h3>
+							<input type="text" id="inputFilterAction" onkeyup="selectFilterAction()" placeholder="Search text.." title="Type in text" style="display: inline;width:30%">
+							<select id="selectFilterActionTable" style="display: inline;width:20%"></select>
+							<select id="selectFilterAction" onchange="hideInputOnAction()" style="display: inline;width:15%">
+								<option value="0">Filter by name</option>
+								<option value="1">Filter by value</option>
+								<option value="2">Filter by order</option>
+							</select>
+
+							<select disabled hidden id="selectedOrder" style="display: inline;width:10%">
+								<option value="0">ASC</option>
+								<option value="1">DESC</option>
+							</select>
+							<select disabled hidden id="selectedBinaryOperator" style="display: inline;width:10%">
+								<option value="0"><</option>
+								<option value="1"><=</option>
+								<option value="2">=</option>
+								<option value="3">></option>
+								<option value="4">>=</option>
+							</select>
+							<button id="sortButton" onclick="selectFilterAction()" disabled hidden>Order</button>
+
+							<h4>Research Inventory</h4>
+							<div id="tableResearchInventory" class="table-wrapper"></div>
+					</section>
+
+			</div>
+
+			<script>
+				document.addEventListener("DOMContentLoaded", () => {
+					sortTable('inputFilterAction','tableResearchInventory',0)
+					noRegions();
+				});
+			</script>
+
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script type='text/javascript' src='assets/js/style_research_inventory.js'></script>
+			<script type='text/javascript' src='assets/js/tableFilters.js'></script>
+			<script type='text/javascript' src='assets/js/mapActions.js'></script>
+			<script type='text/javascript' src='assets/js/readAndWriteActions.js'></script>
+
+	</body>
+	<section id="footer">
+		<div class="inner">
+			<ul class="copyright">
+				<li>Développeur : <a class="signature" href='https://ausonius.u-bordeaux-montaigne.fr/annuaire?chercheur=346'>Alexandre Zanni (Doctorant Archéologie, UMR 5607 Ausonius)</a></li></br>
+				<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+			</ul>
+		</div>
+	</section>
+</html>
