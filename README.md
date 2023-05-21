@@ -1,5 +1,5 @@
-# R.-LITE-WEB-GIS by [Alexandre_ZANNI](https://zanniadevweb.github.io/portfolio_zanni/)-
-This software is based on a free Javascript plugin called [Leaflet](https://leafletjs.com/) :
+# R.-LITE-WEB-GIS by [Alexandre_ZANNI](https://zanniadevweb.github.io/portfolio_zanni/)
+**This software is based on a free Javascript plugin called [Leaflet](https://leafletjs.com/) :**
 ![R.-LITE-WEB-GIS logo](https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Leaflet_logo.svg/800px-Leaflet_logo.svg.png)
 
 --------------------------------------------------------------------------------
