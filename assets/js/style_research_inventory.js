@@ -4,7 +4,7 @@
         '<a href="http://openstreetmap.org">OpenStreetMap</a>';
     L.tileLayer(
         'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; ' + mapLink + ' <a href="https://zanniadevweb.github.io/portfolio_zanni/">- Customized by Alexandre Zanni</a>',
+        attribution: '&copy; ' + mapLink + ' <a href="https://github.com/zanniadevweb/cms_r-lite-web-gis">- Customized by Alexandre Zanni</a>',
 				maxNativeZoom:19,
         maxZoom: 25,
         }).addTo(map);

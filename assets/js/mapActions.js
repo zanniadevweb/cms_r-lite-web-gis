@@ -83,7 +83,7 @@ function fillLegend() {
 	var coordInsideLabelPlanesLoop = '';
 	legend.onAdd = function(map) {
 		var div = L.DomUtil.create("div", "legend");
-		div.style = "overflow-y:scroll; overflow-x:hidden; height:450px;";
+		div.style = "overflow-y:scroll; overflow-x:hidden; height:300px;";
 		div.innerHTML += "<h4>Map Actions</h4><br>";
 		div.innerHTML += '<label id="checkboxScreenSize" class="input-check"><input onchange="change_state(this)" onclick="changeScreenSize()" type="checkbox" style="font-size:15px"/> <span id="textScreenSize">-> REDUCE MAP <-</span></label><br>'
 		div.innerHTML += "<h3>Map Points</h3><br>";

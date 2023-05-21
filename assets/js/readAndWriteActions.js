@@ -10,7 +10,7 @@ var fixtureExportHtml = `
 			var map = L.map('map').setView([40.421190, 15.005673], 4);
 
 			new L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> <a href="https://zanniadevweb.github.io/portfolio_zanni/">- Customized by Alexandre Zanni</a>'
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> <a href="https://github.com/zanniadevweb/cms_r-lite-web-gis">- Customized by Alexandre Zanni</a>'
 			}).addTo(map);
 
 			new L.marker([51.5, -0.09]).addTo(map)
@@ -509,7 +509,7 @@ function htmlContentForExport() {
 		var iPointsArray = [`+stringifiedGlobalPointsArray+`];
 
 		new L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> <a href="https://zanniadevweb.github.io/portfolio_zanni/">- Customized by Alexandre Zanni</a>'
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> <a href="https://github.com/zanniadevweb/cms_r-lite-web-gis">- Customized by Alexandre Zanni</a>'
 		}).addTo(map);
 
 		for (var iPoints = 0; iPoints < iPointsArray.length; iPoints++) {
