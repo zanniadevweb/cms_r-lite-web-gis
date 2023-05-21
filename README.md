@@ -10,3 +10,6 @@ R.-LITE-WEB-GIS Acronym stands for :
 R.-LITE-WEB-GIS is a Web project that provides two main features:
 - Creating and sort data in a friendly table, combined to a map with points and polygons.
 - Export the created map ready for the web, to share science results with the world.
+
+
+Click [HERE]( https://zanniadevweb.github.io/cms_r-lite-web-gis/) to access the demo website, otherwise download it ! 
