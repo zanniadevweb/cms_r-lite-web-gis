@@ -1,4 +1,4 @@
-# R.-LITE-WEB-GIS made by [Alexandre_ZANNI](https://zanniadevweb.github.io/portfolio_zanni/), [Doctorant en Archéologie], UMR 5607 Ausonius, Université Bordeax Montaigne(https://ausonius.u-bordeaux-montaigne.fr/annuaire?chercheur=346)
+# R.-LITE-WEB-GIS made by [Alexandre_ZANNI](https://zanniadevweb.github.io/portfolio_zanni/), [Doctorant en Archéologie](https://ausonius.u-bordeaux-montaigne.fr/annuaire?chercheur=346), UMR 5607 Ausonius, Université Bordeax Montaigne
 **This software is based on a free Javascript plugin called [Leaflet](https://leafletjs.com/) :**
 ![R.-LITE-WEB-GIS logo](https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Leaflet_logo.svg/800px-Leaflet_logo.svg.png)
 
