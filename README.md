@@ -4,6 +4,7 @@ This software is based on a free Javascript plugin called [Leaflet](https://leaf
 
 --------------------------------------------------------------------------------
 R.-LITE-WEB-GIS Acronym stands for :
+
 **Research(-aimed) Leaflet Intuitive Tool Enabling Web Geographic Instant Solutions**
 
 R.-LITE-WEB-GIS is a Web project that provides two main features:
