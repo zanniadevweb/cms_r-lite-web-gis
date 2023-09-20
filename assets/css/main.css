@@ -3374,6 +3374,8 @@ input, select, textarea {
 		pointer-events: auto;
 		opacity: 1;
 		visibility: visible;
+		padding-top: 25%;
+		padding-bottom: 25%;
 	}
 
 		body.is-menu-visible #menu .inner {
