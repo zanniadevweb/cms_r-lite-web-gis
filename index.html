@@ -31,7 +31,7 @@
 						<div class="inner">
 							<h2>Menu</h2>
 							<ul class="links">
-								<li><b>1. Charger CSV : </b><input id="fileInput" type="file" accept=".csv" onchange="readFile(this)"></li></br>
+								<li><b>1. Charger CSV : </b><input id="fileInput" type="file" accept=".csv" onchange="readFile(this); this.value = null;"></li></br>
 								<li><button id="fileButton" disabled>Enregistrer Fichier CSV</button></li></br>
 								<li><button onclick="downloadCsvTemplate()">Télécharger Template CSV</button></li></br>
 
