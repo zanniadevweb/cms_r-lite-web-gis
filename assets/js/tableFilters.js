@@ -5,10 +5,8 @@ function selectFilterAction(isDifferentAction = null) {
 	}
 	var columnId = selectTable("selectFilterActionTable");
 	if (action == 0) { // TRI PAR NOM
-		console.log('RECHERCHE PAR NOM');
 		searchTable('inputFilterAction','tableResearchInventory',columnId);
 	} else if (action == 1) { // TRI PAR VALEUR
-		console.log('RECHERCHE PAR VALEUR');
 		searchBinaryOperatorTable('inputFilterAction','tableResearchInventory',columnId);
 	} else if (action == 2) { // TRI PAR ORDRE
 		sortTable('inputFilterAction','tableResearchInventory',columnId);
