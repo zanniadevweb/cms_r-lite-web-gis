@@ -1,5 +1,8 @@
-function selectFilterAction() {
+function selectFilterAction(isDifferentAction = null) {
 	var action = selectTable("selectFilterAction");
+	if (isDifferentAction == true) {
+	  action = 0
+	}
 	var columnId = selectTable("selectFilterActionTable");
 	if (action == 0) { // TRI PAR NOM
 		console.log('RECHERCHE PAR NOM');
@@ -24,16 +27,19 @@ function hideInputOnAction() {
 		disableAndHideInput(inputFilterAction, false);
 		disableAndHideInput(selectedBinaryOperator);
 		disableAndHideInput(selectedOrder, true);
+		resetSearchStateTable();
 	} else if (action == 1) { // TRI PAR VALEUR
 		disableAndHideInput(sortButton);
 		disableAndHideInput(inputFilterAction, false);
 		disableAndHideInput(selectedBinaryOperator, false);
 		disableAndHideInput(selectedOrder);
+		resetSearchStateTable();
 	} else if (action == 2) { // TRI PAR ORDRE
 		disableAndHideInput(sortButton, false);
 		disableAndHideInput(inputFilterAction, true);
 		disableAndHideInput(selectedBinaryOperator);
 		disableAndHideInput(selectedOrder, false);
+		resetSearchStateTable();
 	}
 }
 
@@ -57,6 +63,11 @@ function disableAndHideInput(input, isToDisableAndHide = true) {
 				input.hidden = false
 			}
 	}
+}
+
+function resetSearchStateTable() {
+	document.getElementById('inputFilterAction').value = '';
+	selectFilterAction(true);
 }
 
 function selectTable(columnId) {
