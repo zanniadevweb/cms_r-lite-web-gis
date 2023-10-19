@@ -513,7 +513,10 @@ function htmlContentForExport() {
 		var iPointsArray = [`+stringifiedGlobalPointsArray+`];
 
 		new L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> <a href="https://github.com/zanniadevweb/cms_r-lite-web-gis">- Customized by Alexandre Zanni</a>'
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> <a href="https://github.com/zanniadevweb/cms_r-lite-web-gis">- Customized by Alexandre Zanni</a>',
+		maxNativeZoom:19,
+		maxZoom: 19,
+		noWrap: true
 		}).addTo(map);
 
 		for (var iPoints = 0; iPoints < iPointsArray.length; iPoints++) {
