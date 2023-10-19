@@ -1,6 +1,10 @@
 var csvSeparatorChar = ';';
 
-var fixtureCSVTemplate = `Header 1;Header 2;Header 3;Latitude;Longitude\rValue 1 Line 1;Value 2 Line 1;Value 3 Line 1;48.79394;2.3848870\rValue 1 Line 2;Value 2 Line 2;Value 3 Line 2;51.473379;-0.129398`;
+var fixtureCSVTemplate =
+`Header 1;Header 2;Header 3;Latitude;Longitude
+Value 1 Line 1;Value 2 Line 1;Value 3 Line 1;48.79394;2.3848870
+Value 1 Line 2;Value 2 Line 2;Value 3 Line 2;51.473379;-0.129398
+`;
 var fixturePolygonsTemplate = `([35.274292, 23.501476],[35.708851, 23.580879],[35.316642, 26.338725],[34.994183, 26.236009],[34.899905, 24.718213],[35.066643, 24.737697]).color('#f5f542').tooltip("Crete")`;
 var fixtureExportHtml = `
 		<link rel='stylesheet' href='https://unpkg.com/leaflet@1.9.3/dist/leaflet.css' integrity='sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=' crossorigin=''/>
