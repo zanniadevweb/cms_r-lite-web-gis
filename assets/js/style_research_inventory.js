@@ -7,6 +7,7 @@
         attribution: '&copy; ' + mapLink + ' <a href="https://github.com/zanniadevweb/cms_r-lite-web-gis">- Customized by Alexandre Zanni</a>',
 				maxNativeZoom:19,
         maxZoom: 25,
+	noWrap: true
         }).addTo(map);
 
 		var labelPlanes = [];
