@@ -5,6 +5,7 @@ var fixtureCSVTemplate =
 Value 1 Line 1;Value 2 Line 1;Value 3 Line 1;48.79394;2.3848870
 Value 1 Line 2;Value 2 Line 2;Value 3 Line 2;51.473379;-0.129398
 `;
+
 var fixturePolygonsTemplate = `([35.274292, 23.501476],[35.708851, 23.580879],[35.316642, 26.338725],[34.994183, 26.236009],[34.899905, 24.718213],[35.066643, 24.737697]).color('#f5f542').tooltip("Crete")`;
 var fixtureExportHtml = `
 		<link rel='stylesheet' href='https://unpkg.com/leaflet@1.9.3/dist/leaflet.css' integrity='sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=' crossorigin=''/>
@@ -363,7 +364,6 @@ function importArrayIntoTable(list, tableId) {
 		}
 	}
 
-
 	var el = document.getElementById(tableId);
 	el.innerHTML = "";
 	el.appendChild(table);
@@ -505,6 +505,17 @@ function htmlContentForExport() {
 
 	stringifiedGlobalPointsArray	= tmpStringifiedGlobalPointsArray.join(',');
 
+	var selectedMapLayer = document.getElementById('selectedLayerMap').getAttribute('value');
+	var chosenMapLayerSrc = ''
+
+	if (selectedMapLayer === 'OpenTopoMap') {
+		chosenMapLayer = 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png'
+	} else if (selectedMapLayer === 'Satellite') {
+		chosenMapLayer = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+	} else {
+		chosenMapLayer = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+	}
+
 	var tmpHtmlForExport = fixtureExportHtmlTemplate +
 	'<script>' +
 	`
@@ -512,7 +523,7 @@ function htmlContentForExport() {
 
 		var iPointsArray = [`+stringifiedGlobalPointsArray+`];
 
-		new L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		new L.tileLayer('${chosenMapLayer}', {
 		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> <a href="https://github.com/zanniadevweb/cms_r-lite-web-gis">- Customized by Alexandre Zanni</a>',
 		maxNativeZoom:19,
 		maxZoom: 19,

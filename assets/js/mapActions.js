@@ -81,11 +81,14 @@ function fillLegend() {
 	var idInsideLabelPlanesLoop = '';
 	var localLineValue = '';
 	var coordInsideLabelPlanesLoop = '';
-	legend.onAdd = function(map) {
+	legend.onAdd = function(map) { 
 		var div = L.DomUtil.create("div", "legend");
-		div.style = "overflow-y:scroll; overflow-x:hidden; height:300px;";
+		div.style = "overflow-y:scroll; overflow-x:hidden; height:500px;";
 		div.innerHTML += "<h4>Map Actions</h4><br>";
 		div.innerHTML += '<label id="checkboxScreenSize" class="input-check"><input onchange="change_state(this)" onclick="changeScreenSize()" type="checkbox" style="font-size:15px"/> <span id="textScreenSize">-> REDUCE MAP <-</span></label><br>'
+		div.innerHTML += '<button id="tileMapLayerOpenStreetMap" onclick="tileMapLayerOpenStreetMap()" style="background: #d93616; font-size:15px; background-image:url(\'https://tile.openstreetmap.org/5/15/11.png\')">Open Street Map</button><br>'
+		div.innerHTML += '<button id="tileMapLayerOpenTopoMap" onclick="tileMapLayerOpenTopoMap()" style="background: #d93616; font-size:15px; background-image:url(\'https://c.tile.opentopomap.org/5/15/11.png\')">Open Topo Map</button><br>'
+		div.innerHTML += '<button id="tileMapLayerSatellite" onclick="tileMapLayerSatellite()" style="background: #d93616; font-size:15px; background-image:url(\'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/11/15\')">Satellite Map (ESRI)</button><br><br>'
 		div.innerHTML += "<h3>Map Points</h3><br>";
 		for (var iLinesVal = 0; iLinesVal < lineValues.length; iLinesVal++) {
 			localLineValue = lineValues[iLinesVal]
@@ -235,6 +238,75 @@ function noRegions() {
 	for (var iPolygons = 0; iPolygons < polygons.length ; iPolygons++) {
 		polygons[iPolygons].style.display= 'none';
 	}
+}
+
+function tileMapLayerOpenStreetMap() {
+	tileMapLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+	document.getElementById('selectedLayerMap').setAttribute('value', 'OpenStreetMap');
+/*	console.log('Open Street Map')
+	var tileContainer = document.getElementsByClassName('leaflet-tile-container leaflet-zoom-animated')[0];
+	var tiles = tileContainer.children
+	for (var iElements = 0; iElements < tiles.length ; iElements++) {
+		let child = tiles[iElements]
+		let childSrcVal = child.getAttribute('src')
+		let childSplit = childSrcVal.split('/')
+		let childPartToReplace = (childSplit.slice(0, 3)).join('/');
+		let childPartToKeep = (childSplit.slice(3)).join('/');
+		let childPartReplaced = childPartToReplace.replace('opentopomap', 'openstreetmap')
+		let childFullReplaced = childPartReplaced + '/' + childPartToKeep
+		child.setAttribute('src', childFullReplaced);
+	}*/
+}
+
+function tileMapLayerOpenTopoMap() {
+	tileMapLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png')
+	document.getElementById('selectedLayerMap').setAttribute('value', 'OpenTopoMap');
+/*	console.log('Open Topo Map')
+	var tileContainer = document.getElementsByClassName('leaflet-tile-container leaflet-zoom-animated')[0];
+	var tiles = tileContainer.children
+	for (var iElements = 0; iElements < tiles.length ; iElements++) {
+		let child = tiles[iElements]
+		let childSrcVal = child.getAttribute('src')
+		let childSplit = childSrcVal.split('/')
+		let childPartToReplace = (childSplit.slice(0, 3)).join('/');
+		let childPartToKeep = (childSplit.slice(3)).join('/');
+		let childPartReplaced = childPartToReplace.replace('openstreetmap', 'opentopomap')
+		let childFullReplaced = childPartReplaced + '/' + childPartToKeep
+		child.setAttribute('src', childFullReplaced);
+	}*/
+}
+
+function tileMapLayerSatellite() {
+	tileMapLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}')
+	document.getElementById('selectedLayerMap').setAttribute('value', 'Satellite');
+	// console.log('Satelitte')
+/*	var tileContainer = document.getElementsByClassName('leaflet-tile-container leaflet-zoom-animated')[0];
+	var tiles = tileContainer.children
+	for (var iElements = 0; iElements < tiles.length ; iElements++) {
+		let child = tiles[iElements]
+		let childSrcVal = child.getAttribute('src')
+		let childSplit = childSrcVal.split('/')
+		let childPartToReplace = (childSplit.slice(0, 3)).join('/');
+		let childPartToKeep = (childSplit.slice(3)).join('/');
+		let childPartReplaced = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile'
+		let childFullReplaced = childPartReplaced + '/' + childPartToKeep
+		child.setAttribute('src', childFullReplaced);
+	}*/
+}
+
+function tileMapLayer(src) {
+	var allExistingLayers = document.getElementsByClassName('leaflet-layer') // Need to delete previous created objects from HTML Collection containing Leaflet Layers
+	for (var iElements = 0; iElements < allExistingLayers.length ; iElements++) {
+		allExistingLayers[iElements].remove()
+	}
+	var newTileLayer = new L.tileLayer(
+        src, {
+        attribution: '&copy; ' + mapLink + ' <a href="https://github.com/zanniadevweb/cms_r-lite-web-gis">- Customized by Alexandre Zanni</a>',
+				maxNativeZoom:19,
+        maxZoom: 19,
+        noWrap: true
+    }).addTo(map)
+	map.addLayer(newTileLayer)
 }
 
 function fifthCentRegions() {

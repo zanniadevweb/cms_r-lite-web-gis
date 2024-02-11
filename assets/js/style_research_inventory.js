@@ -2,13 +2,13 @@
 	).setView([40.421190, 15.005673], 4);
     mapLink =
         '<a href="http://openstreetmap.org">OpenStreetMap</a>';
-    L.tileLayer(
+    mapLayer = L.tileLayer(
         'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; ' + mapLink + ' <a href="https://github.com/zanniadevweb/cms_r-lite-web-gis">- Customized by Alexandre Zanni</a>',
 				maxNativeZoom:19,
-        maxZoom: 25,
-	noWrap: true
-        }).addTo(map);
+        maxZoom: 19,
+        noWrap: true
+    }).addTo(map)
 
 		var labelPlanes = [];
 		var label = '';
