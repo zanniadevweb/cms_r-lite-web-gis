@@ -242,25 +242,21 @@ function noRegions() {
 }
 
 function tileMapLayerOpenStreetMap() {
-	console.log('open street map')
 	tileMapLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
 	document.getElementById('selectedLayerMap').setAttribute('value', 'OpenStreetMap');
 }
 
 function tileMapLayerOpenTopoMap() {
-	console.log('open topo map')
 	tileMapLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png')
 	document.getElementById('selectedLayerMap').setAttribute('value', 'OpenTopoMap');
 }
 
 function tileMapLayerSatellite() {
-	console.log('satellite')
 	tileMapLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}')
 	document.getElementById('selectedLayerMap').setAttribute('value', 'Satellite');
 }
 
 function tileMapLayerEsriRelief() {
-	console.log('relief')
 	tileMapLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}')
 	document.getElementById('selectedLayerMap').setAttribute('value', 'ReliefEsri');
 }

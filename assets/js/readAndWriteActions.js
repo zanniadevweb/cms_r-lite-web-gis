@@ -509,16 +509,12 @@ function htmlContentForExport() {
 	var chosenMapLayerSrc = ''
 
 	if (selectedMapLayer === 'OpenTopoMap') {
-		console.log('open topo')
 		chosenMapLayer = 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png'
 	} else if (selectedMapLayer === 'Satellite') {
-		console.log('satellite')
 		chosenMapLayer = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
 	} else if (selectedMapLayer === 'ReliefEsri') {
-		console.log('relief')
 		chosenMapLayer = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}'
 	}else {
-		console.log('tile layer')
 		chosenMapLayer = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 	}
 
