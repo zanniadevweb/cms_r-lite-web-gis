@@ -88,7 +88,8 @@ function fillLegend() {
 		div.innerHTML += '<label id="checkboxScreenSize" class="input-check"><input onchange="change_state(this)" onclick="changeScreenSize()" type="checkbox" style="font-size:15px"/> <span id="textScreenSize">-> REDUCE MAP <-</span></label><br>'
 		div.innerHTML += '<button id="tileMapLayerOpenStreetMap" onclick="tileMapLayerOpenStreetMap()" style="background: #d93616; font-size:15px; background-image:url(\'https://tile.openstreetmap.org/5/15/11.png\')">Open Street Map</button><br>'
 		div.innerHTML += '<button id="tileMapLayerOpenTopoMap" onclick="tileMapLayerOpenTopoMap()" style="background: #d93616; font-size:15px; background-image:url(\'https://c.tile.opentopomap.org/5/15/11.png\')">Open Topo Map</button><br>'
-		div.innerHTML += '<button id="tileMapLayerSatellite" onclick="tileMapLayerSatellite()" style="background: #d93616; font-size:15px; background-image:url(\'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/11/15\')">Satellite Map (ESRI)</button><br><br>'
+		div.innerHTML += '<button id="tileMapLayerSatellite" onclick="tileMapLayerSatellite()" style="background: #d93616; font-size:15px; background-image:url(\'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/11/15\')">Satellite Map (ESRI)</button><br>'
+		div.innerHTML += '<button id="tileMapLayerEsriRelief" onclick="tileMapLayerEsriRelief()" style="background: #d93616; font-size:15px; background-image:url(\'https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/5/11/15\')">Relief Map (ESRI)</button><br><br>'
 		div.innerHTML += "<h3>Map Points</h3><br>";
 		for (var iLinesVal = 0; iLinesVal < lineValues.length; iLinesVal++) {
 			localLineValue = lineValues[iLinesVal]
@@ -241,57 +242,27 @@ function noRegions() {
 }
 
 function tileMapLayerOpenStreetMap() {
+	console.log('open street map')
 	tileMapLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
 	document.getElementById('selectedLayerMap').setAttribute('value', 'OpenStreetMap');
-/*	console.log('Open Street Map')
-	var tileContainer = document.getElementsByClassName('leaflet-tile-container leaflet-zoom-animated')[0];
-	var tiles = tileContainer.children
-	for (var iElements = 0; iElements < tiles.length ; iElements++) {
-		let child = tiles[iElements]
-		let childSrcVal = child.getAttribute('src')
-		let childSplit = childSrcVal.split('/')
-		let childPartToReplace = (childSplit.slice(0, 3)).join('/');
-		let childPartToKeep = (childSplit.slice(3)).join('/');
-		let childPartReplaced = childPartToReplace.replace('opentopomap', 'openstreetmap')
-		let childFullReplaced = childPartReplaced + '/' + childPartToKeep
-		child.setAttribute('src', childFullReplaced);
-	}*/
 }
 
 function tileMapLayerOpenTopoMap() {
+	console.log('open topo map')
 	tileMapLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png')
 	document.getElementById('selectedLayerMap').setAttribute('value', 'OpenTopoMap');
-/*	console.log('Open Topo Map')
-	var tileContainer = document.getElementsByClassName('leaflet-tile-container leaflet-zoom-animated')[0];
-	var tiles = tileContainer.children
-	for (var iElements = 0; iElements < tiles.length ; iElements++) {
-		let child = tiles[iElements]
-		let childSrcVal = child.getAttribute('src')
-		let childSplit = childSrcVal.split('/')
-		let childPartToReplace = (childSplit.slice(0, 3)).join('/');
-		let childPartToKeep = (childSplit.slice(3)).join('/');
-		let childPartReplaced = childPartToReplace.replace('openstreetmap', 'opentopomap')
-		let childFullReplaced = childPartReplaced + '/' + childPartToKeep
-		child.setAttribute('src', childFullReplaced);
-	}*/
 }
 
 function tileMapLayerSatellite() {
+	console.log('satellite')
 	tileMapLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}')
 	document.getElementById('selectedLayerMap').setAttribute('value', 'Satellite');
-	// console.log('Satelitte')
-/*	var tileContainer = document.getElementsByClassName('leaflet-tile-container leaflet-zoom-animated')[0];
-	var tiles = tileContainer.children
-	for (var iElements = 0; iElements < tiles.length ; iElements++) {
-		let child = tiles[iElements]
-		let childSrcVal = child.getAttribute('src')
-		let childSplit = childSrcVal.split('/')
-		let childPartToReplace = (childSplit.slice(0, 3)).join('/');
-		let childPartToKeep = (childSplit.slice(3)).join('/');
-		let childPartReplaced = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile'
-		let childFullReplaced = childPartReplaced + '/' + childPartToKeep
-		child.setAttribute('src', childFullReplaced);
-	}*/
+}
+
+function tileMapLayerEsriRelief() {
+	console.log('relief')
+	tileMapLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}')
+	document.getElementById('selectedLayerMap').setAttribute('value', 'ReliefEsri');
 }
 
 function tileMapLayer(src) {
