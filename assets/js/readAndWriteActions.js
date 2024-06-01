@@ -442,8 +442,10 @@ function importArrayIntoTable(list, tableId) {
 				}
 				singleHeaderValues = (cleanHeaders.join(csvSeparatorChar) + '\\r').split();
 				data = singleHeaderValues.concat(tableToCsvValues).join('').replaceAll('\\r', '\n').replaceAll('&nbsp;','').replaceAll('&amp;','')
+				singleHeaderValues = [];
+				trHeadersValues = [];
 				currLine = 0;
-				const csvdata = csvmaker(data);
+				tableToCsvValues = [];
 				download(data);
 			}
 	}
