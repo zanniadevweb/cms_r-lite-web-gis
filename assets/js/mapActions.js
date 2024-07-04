@@ -41,7 +41,6 @@ function synchronizeMap() {
 
 		if (latitude !== '' && longitude !== '') {
 			trValuesNoHtmlTags = trValues[k].innerHTML.replaceAll('</td>','').split('<td>');
-			console.log(trValues[k])
 			trValues[k].setAttribute('id',trValuesNoHtmlTags[2]) // First Column is set as ID which can then be referred with: "<a href="#ID">Value</a>"
 			// trValuesNoHtmlTags.splice(-2,1); // Remove Longitude Value
 			// trValuesNoHtmlTags.splice(-1,1); // Remove Latitude Value
