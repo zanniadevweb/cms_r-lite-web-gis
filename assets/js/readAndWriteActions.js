@@ -520,10 +520,14 @@ function htmlContentForExport() {
 		chosenMapLayer = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 	}
 
+	var currentZoom = map.getZoom();
+	var currentLat = (map.getBounds()._northEast.lat+map.getBounds()._southWest.lat)/2
+	var currentLng = (map.getBounds()._northEast.lng+map.getBounds()._southWest.lng)/2
+
 	var tmpHtmlForExport = fixtureExportHtmlTemplate +
 	'<script>' +
 	`
-		var map = L.map('map').setView([40.421190, 15.005673], 4);
+		var map = L.map('map').setView([`+currentLat+`,`+currentLng+`], `+currentZoom+`);
 
 		var iPointsArray = [`+stringifiedGlobalPointsArray+`];
 

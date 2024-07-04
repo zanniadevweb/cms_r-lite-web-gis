@@ -1,5 +1,5 @@
     var map = new L.map('map_research'
-	).setView([40.421190, 15.005673], 4);
+	).setView(startingViewLatLng, startingViewZoom);
     mapLink =
         '<a href="http://openstreetmap.org">OpenStreetMap</a>';
     mapLayer = L.tileLayer(
