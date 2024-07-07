@@ -355,15 +355,12 @@ function importArrayIntoTable(list, tableId) {
 					currValue.includes('.svg') || currValue.includes('.SVG') ||
 					currValue.includes('.jpeg') || currValue.includes('.JPEG'))
 				) {
-					isPlainTextOnly = false;
 					currValue = '<a href='+currValue+' target="_blank"><img src='+currValue+' style=\'max-width:100px;\'></a>' // TODO
 				} else if (currValue.includes('type="checkbox"')) {
-					isPlainTextOnly = false;
 					var checkedVal = ""
 					if ( currValue.split('checked')[1] !== undefined && currValue.split('checked')[1].includes('true')) { checkedVal = 'checked="true"'}
 					currValue = "<input class='checkbox' type='checkbox' onclick='if(this.checked === true){this.setAttribute(\"checked\",true)} else {this.setAttribute(\"checked\",false)}' "+checkedVal+"/>" // TODO
 				} else if (currValue.includes('href=#')) {
-					isPlainTextOnly = false;
 					let tmpValueOld = currValue.replaceAll('=','').replaceAll('"','').split('href')
 					let tmpValueNew = []
 					for (var l=0; l < tmpValueOld.length; l++) {
