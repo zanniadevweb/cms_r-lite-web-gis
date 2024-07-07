@@ -349,15 +349,29 @@ function importArrayIntoTable(list, tableId) {
 			var currValue = list[i][cols[j]]
 			if (currValue === undefined) {
 				cell.innerHTML = '';
-			} else {
-				if (currValue.startsWith('https') &&
-					(currValue.includes('.jpg') || currValue.includes('.JPG') ||
+				} else {
+					if ((currValue.includes('.jpg') || currValue.includes('.JPG') ||
 					currValue.includes('.png') || currValue.includes('.PNG') ||
 					currValue.includes('.svg') || currValue.includes('.SVG') ||
 					currValue.includes('.jpeg') || currValue.includes('.JPEG'))
 				) {
-					var imgLink = currValue;
+					isPlainTextOnly = false;
 					currValue = '<a href='+currValue+' target="_blank"><img src='+currValue+' style=\'max-width:100px;\'></a>' // TODO
+				} else if (currValue.includes('type="checkbox"')) {
+					isPlainTextOnly = false;
+					var checkedVal = ""
+					if ( currValue.split('checked')[1] !== undefined && currValue.split('checked')[1].includes('true')) { checkedVal = 'checked="true"'}
+					currValue = "<input class='checkbox' type='checkbox' onclick='if(this.checked === true){this.setAttribute(\"checked\",true)} else {this.setAttribute(\"checked\",false)}' "+checkedVal+"/>" // TODO
+				} else if (currValue.includes('href=#')) {
+					isPlainTextOnly = false;
+					let tmpValueOld = currValue.replaceAll('=','').replaceAll('"','').split('href')
+					let tmpValueNew = []
+					for (var l=0; l < tmpValueOld.length; l++) {
+						if (tmpValueOld[l] !== '') {
+							tmpValueNew.push('<a href="'+tmpValueOld[l]+'">'+tmpValueOld[l]+'</a>') // TODO
+						}
+					}
+					currValue = tmpValueNew.join('')
 				}
 				cell.innerHTML = currValue;
 			}
@@ -371,7 +385,8 @@ function importArrayIntoTable(list, tableId) {
 }
 
 // ---------------- SAVE FILE BUTTON ACTIONS --------------
-	const download = function (data, nameFile = 'result', blobFileFormat = 'text/csv', fileExtension = '.csv') {
+	const download = function (unmodified_data, nameFile = 'result', blobFileFormat = 'text/csv', fileExtension = '.csv') {
+			let data = unmodified_data.replaceAll('onclick="if(this.checked === true){this.setAttribute(&quot;checked&quot;,true)} else {this.setAttribute(&quot;checked&quot;,false)}"', "")
 			// Creating a Blob for having a csv file format
 			// and passing the data with type
 			const blob = new Blob([data], { type: blobFileFormat });
@@ -416,8 +431,17 @@ function importArrayIntoTable(list, tableId) {
 						tableChildCellOneLine = trValues[k].children
 						for (var childCell = 0; childCell < tableChildCellOneLine.length; childCell++) {
 							strChildCellValue = tableChildCellOneLine[childCell].innerHTML;
-							if (strChildCellValue.startsWith('<a href=')) {
+							if (strChildCellValue.startsWith('<a href=') && !(strChildCellValue.includes('#'))) {
 								strChildCellValue = strChildCellValue.split('href=')[1].split('>')[0].replaceAll('"','');
+							} else if (strChildCellValue.includes('a href="#')) {
+								TMPstrChildCellValueOld = strChildCellValue.replaceAll('href=','').replaceAll(' ','').replaceAll('<a','').split('"')
+								TMPstrChildCellValueNew = []
+								for (var m=0; m<TMPstrChildCellValueOld.length; m++) {
+									if (TMPstrChildCellValueOld[m] !== '' && !(TMPstrChildCellValueOld[m].includes('</a>'))) {
+										TMPstrChildCellValueNew.push(TMPstrChildCellValueOld[m])
+									}
+								}
+								strChildCellValue = TMPstrChildCellValueNew.join(' href=')
 							}
 							tableOneLine.push(strChildCellValue)
 						}
