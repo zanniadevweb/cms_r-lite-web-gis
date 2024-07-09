@@ -305,6 +305,7 @@ function importArrayIntoTable(list, tableId) {
 	var table = document.createElement("table");
 	table.setAttribute("class", "sortable");
 	table.setAttribute("id", "tableData");
+	sorttableJs();
 
 	// Create theader
 	var thead = document.createElement("thead");
