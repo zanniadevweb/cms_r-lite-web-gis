@@ -537,7 +537,9 @@ function htmlContentForExport() {
 		chosenMapLayer = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
 	} else if (selectedMapLayer === 'ReliefEsri') {
 		chosenMapLayer = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}'
-	}else {
+	} else if (selectedMapLayer === 'DareMap') {
+		chosenMapLayer = 'https://dh.gu.se/tiles/imperium/{z}/{x}/{y}.png'
+	} else {
 		chosenMapLayer = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 	}
 

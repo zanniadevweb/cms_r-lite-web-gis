@@ -90,7 +90,8 @@ function fillLegend() {
 		div.innerHTML += '<button id="tileMapLayerOpenStreetMap" onclick="tileMapLayerOpenStreetMap()" style="background: #d93616; font-size:15px; background-image:url(\'https://tile.openstreetmap.org/5/15/11.png\')">Open Street Map</button><br>'
 		div.innerHTML += '<button id="tileMapLayerOpenTopoMap" onclick="tileMapLayerOpenTopoMap()" style="background: #d93616; font-size:15px; background-image:url(\'https://c.tile.opentopomap.org/5/15/11.png\')">Open Topo Map</button><br>'
 		div.innerHTML += '<button id="tileMapLayerSatellite" onclick="tileMapLayerSatellite()" style="background: #d93616; font-size:15px; background-image:url(\'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/11/15\')">Satellite Map (ESRI)</button><br>'
-		div.innerHTML += '<button id="tileMapLayerEsriRelief" onclick="tileMapLayerEsriRelief()" style="background: #d93616; font-size:15px; background-image:url(\'https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/5/11/15\')">Relief Map (ESRI)</button><br><br>'
+		div.innerHTML += '<button id="tileMapLayerEsriRelief" onclick="tileMapLayerEsriRelief()" style="background: #d93616; font-size:15px; background-image:url(\'https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/5/11/15\')">Relief Map (ESRI)</button><br>'
+		div.innerHTML += '<button id="tileMapDare" onclick="tileMapDare()" style="background: #d93616; font-size:15px; background-image:url(\'https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/5/11/15\')">DARE Map</button><br><br>'
 		div.innerHTML += "<h3>Map Points</h3><br>";
 		for (var iLinesVal = 0; iLinesVal < lineValues.length; iLinesVal++) {
 			localLineValue = lineValues[iLinesVal]
@@ -261,6 +262,13 @@ function tileMapLayerEsriRelief() {
 	tileMapLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}')
 	document.getElementById('selectedLayerMap').setAttribute('value', 'ReliefEsri');
 }
+
+function tileMapDare() {
+	tileMapLayer('https://dh.gu.se/tiles/imperium/{z}/{x}/{y}.png')
+	document.getElementById('selectedLayerMap').setAttribute('value', 'DareMap');
+}
+
+
 
 function tileMapLayer(src) {
 	var allExistingLayers = document.getElementsByClassName('leaflet-layer') // Need to delete previous created objects from HTML Collection containing Leaflet Layers
