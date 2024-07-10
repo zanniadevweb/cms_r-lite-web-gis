@@ -60,7 +60,6 @@ function synchronizeMap() {
 					trValuesArray.push(trHeadersArray[itrValuesNoHtml-1].toUpperCase() + ' = ' +  trValuesNoHtmlTags[itrValuesNoHtml]);
 				}
 			}
-
 			label = trValuesArray.join('</br>');
 			globalPointsArray.push([latitude, longitude, label]);
 			createPoint(latitude, longitude, label);
@@ -92,6 +91,7 @@ function fillLegend() {
 		div.innerHTML += '<button id="tileMapLayerSatellite" onclick="tileMapLayerSatellite()" style="background: #d93616; font-size:15px; background-image:url(\'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/11/15\')">Satellite Map (ESRI)</button><br>'
 		div.innerHTML += '<button id="tileMapLayerEsriRelief" onclick="tileMapLayerEsriRelief()" style="background: #d93616; font-size:15px; background-image:url(\'https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/5/11/15\')">Relief Map (ESRI)</button><br>'
 		div.innerHTML += '<button id="tileMapDare" onclick="tileMapDare()" style="background: #d93616; font-size:15px; background-image:url(\'https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/5/11/15\')">DARE Map</button><br><br>'
+		div.innerHTML += customMapLegend
 		div.innerHTML += "<h3>Map Points</h3><br>";
 		for (var iLinesVal = 0; iLinesVal < lineValues.length; iLinesVal++) {
 			localLineValue = lineValues[iLinesVal]
@@ -122,6 +122,9 @@ function fillPolygons() {
 		}
 		var polygonLinesFromFile = document.getElementById('tmpFilePolygonsContent').value.split('|');
 		fillPolygonsLoop(polygonLinesFromFile);
+		if (disablePolygonsFirstLoadingMap === true) {
+			noRegions(); // TODO
+		}
 	}
 }
 
@@ -154,7 +157,9 @@ function fillPolygonsLoop(polygonLinesFromFile) {
 }
 
 function createPolygon(polyPointsValues, polyPointsColor, polyPointsTooltip) {
-	new L.polygon(polyPointsValues).setStyle({fillColor: polyPointsColor, color: polyPointsColor}).addTo(map).bindTooltip(polyPointsTooltip, {permanent: true, direction:"center"});
+	let lower_case_snake_case_polygon_tooltip = polyPointsTooltip.toLowerCase().replaceAll(' ','_').replaceAll('(','').replaceAll(')','')
+	// console.log(lower_case_snake_case_polygon_tooltip)
+	new L.polygon(polyPointsValues).setStyle({fillColor: polyPointsColor, color: polyPointsColor, className: lower_case_snake_case_polygon_tooltip}).addTo(map).bindTooltip(polyPointsTooltip, {permanent: true, direction:"center"});
 }
 
 function createPoint(latitude, longitude, label) {
@@ -208,14 +213,17 @@ function changeScreenSize() {
 	}
 }
 
+var firstChangeRegionLabelState = true;
 function changeRegionLabelState() {
 	var checkboxRegionLabelState = document.getElementById('checkboxRegionLabelState');
 	var textRegionLabelState = document.getElementById('textRegionLabelState');
-	if (checkboxRegionLabelState.classList.contains('checked')) {
-		noLabels();
-		changeTextInput(textRegionLabelState, '- OFF LABELS REGION -')
+	if (checkboxRegionLabelState.classList.contains('checked') || firstChangeRegionLabelState === true) {
+		withLabels();
+		changeTextInput(textRegionLabelState, '+ WITH REGION LABELS +')
+		firstChangeRegionLabelState = false;
 	} else {
-		changeTextInput(textRegionLabelState, '+ ON LABELS REGION +')
+		noLabels();
+		changeTextInput(textRegionLabelState, '- NO REGION LABELS -')
 	}
 }
 
@@ -232,16 +240,35 @@ function noLabels() {
 	}
 }
 
+function withLabels() {
+	var tooltips = document.getElementsByClassName('leaflet-tooltip-pane')[0].children;
+	for (var iToolTips = 0; iToolTips < tooltips.length ; iToolTips++) {
+		tooltips[iToolTips].style.display= '';
+	}
+}
+
 function noRegions() {
 	var tooltips = document.getElementsByClassName('leaflet-tooltip-pane')[0].children;
 	for (var iToolTips = 0; iToolTips < tooltips.length ; iToolTips++) {
 		tooltips[iToolTips].style.display= 'none';
 	}
-	var polygons = document.getElementsByClassName('region leaflet-interactive');
+	var polygons = document.querySelectorAll("path:not(.leaflet-marker)");
 	for (var iPolygons = 0; iPolygons < polygons.length ; iPolygons++) {
 		polygons[iPolygons].style.display= 'none';
 	}
 }
+
+function withRegions() {
+	var tooltips = document.getElementsByClassName('leaflet-tooltip-pane')[0].children;
+	for (var iToolTips = 0; iToolTips < tooltips.length ; iToolTips++) {
+		tooltips[iToolTips].style.display= '';
+	}
+	var polygons = document.querySelectorAll("path:not(.leaflet-marker)");
+	for (var iPolygons = 0; iPolygons < polygons.length ; iPolygons++) {
+		polygons[iPolygons].style.display= '';
+	}
+}
+
 
 function tileMapLayerOpenStreetMap() {
 	tileMapLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
@@ -268,8 +295,6 @@ function tileMapDare() {
 	document.getElementById('selectedLayerMap').setAttribute('value', 'DareMap');
 }
 
-
-
 function tileMapLayer(src) {
 	var allExistingLayers = document.getElementsByClassName('leaflet-layer') // Need to delete previous created objects from HTML Collection containing Leaflet Layers
 	for (var iElements = 0; iElements < allExistingLayers.length ; iElements++) {
@@ -283,61 +308,6 @@ function tileMapLayer(src) {
         noWrap: true
     }).addTo(map)
 	map.addLayer(newTileLayer)
-}
-
-function fifthCentRegions() {
-	noRegions();
-	var elements = document.querySelectorAll('.fifth_cent');
-	for (var iElements = 0; iElements < elements.length ; iElements++) {
-		elements[iElements].style.display= '';
-	}
-	if (document.getElementById('checkboxRegionLabelState').classList.contains('checked')) {
-		noLabels();
-	}
-}
-
-function fourthCentRegions() {
-	noRegions();
-	var elements = document.querySelectorAll('.fourth_cent');
-	for (var iElements = 0; iElements < elements.length ; iElements++) {
-		elements[iElements].style.display= '';
-	}
-	if (document.getElementById('checkboxRegionLabelState').classList.contains('checked')) {
-		noLabels();
-	}
-}
-
-function thirdCentRegions() {
-	noRegions();
-	var elements = document.querySelectorAll('.third_cent');
-	for (var iElements = 0; iElements < elements.length ; iElements++) {
-		elements[iElements].style.display= '';
-	}
-	if (document.getElementById('checkboxRegionLabelState').classList.contains('checked')) {
-		noLabels();
-	}
-}
-
-function secondCentRegions() {
-	noRegions();
-	var elements = document.querySelectorAll('.second_cent');
-	for (var iElements = 0; iElements < elements.length ; iElements++) {
-		elements[iElements].style.display= '';
-	}
-	if (document.getElementById('checkboxRegionLabelState').classList.contains('checked')) {
-		noLabels();
-	}
-}
-
-function firstCentRegions() {
-	noRegions();
-	var elements = document.querySelectorAll('.first_cent');
-	for (var iElements = 0; iElements < elements.length ; iElements++) {
-		elements[iElements].style.display = '';
-	}
-	if (document.getElementById('checkboxRegionLabelState').classList.contains('checked')) {
-		noLabels();
-	}
 }
 
 function changeMapCursorPointer() {
