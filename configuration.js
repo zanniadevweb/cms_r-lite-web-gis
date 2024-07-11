@@ -17,6 +17,13 @@ customMapLegend =
 
 disablePolygonsFirstLoadingMap = false;
 
+enableRasterOverlays = true;
+
+rastersArray = [
+    L.imageOverlay('./assets/css/images/syracuse_akradina_neapolis.png', [[[37.079072, 15.297206],[37.062655, 15.26436]]], {opacity: 0.7}),
+    L.imageOverlay('./assets/css/images/syracuse_ortygia.png', [[[37.067097, 15.289713],[37.057552, 15.300441]]], {opacity: 0.7}),
+]
+
 function romanFrontiersFirstCentury() {
     noRegions();
     var elements = document.querySelectorAll('.roman_republic_cyprus, .roman_republic_cyclades, .roman_republic_crete, .roman_republic_egypt, .roman_republic_sicily, .roman_republic_carthago, .roman_republic_sardinia, .roman_republic_spain, .roman_republic_italy, .roman_republic_illyria, .roman_republic_epirus, .roman_republic_achean_league, .roman_republic_etolian_league, .roman_republic_phenicia, .roman_republic_attalid_kingdom');
