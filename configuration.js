@@ -17,11 +17,11 @@ customMapLegend =
 
 disablePolygonsFirstLoadingMap = false;
 
-enableRasterOverlays = true;
+enableRasterOverlays = false;
 
 rastersArray = [
-    L.imageOverlay('./assets/css/images/syracuse_akradina_neapolis.png', [[[37.079072, 15.297206],[37.062655, 15.26436]]], {opacity: 0.7}),
-    L.imageOverlay('./assets/css/images/syracuse_ortygia.png', [[[37.067097, 15.289713],[37.057552, 15.300441]]], {opacity: 0.7}),
+    L.imageOverlay('./assets/css/images/my_image_1.png', [[[37.079072, 15.297206],[37.062655, 15.26436]]], {opacity: 0.7}),
+    L.imageOverlay('./assets/css/images/my_image_2.png', [[[37.067097, 15.289713],[37.057552, 15.300441]]], {opacity: 0.7}),
 ]
 
 function romanFrontiersFirstCentury() {
