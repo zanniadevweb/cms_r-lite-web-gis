@@ -69,6 +69,11 @@ function synchronizeMap() {
 	}
 
 	fillLegend();
+	if (enableRasterOverlays === true) {
+		for (var itRast = 0; itRast < rastersArray.length; itRast++) {
+			rastersArray[itRast].addTo(map)
+		} 
+	}
 }
 
 function fillLegend() {
