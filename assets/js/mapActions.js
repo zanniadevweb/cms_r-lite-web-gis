@@ -2,6 +2,7 @@
 headers = [];
 lineValues = [];
 globalPointsArray = [];
+markers = [];
 // ----------------------------------------------------------
 // ------------------- SUPER VARIABLES LOCALES -------------------
 var isHeadersArrayAlreadyFilled = false;
@@ -41,6 +42,7 @@ function synchronizeMap() {
 
 		if (latitude !== '' && longitude !== '') {
 			trValuesNoHtmlTags = trValues[k].innerHTML.replaceAll('</td>','').split('<td>');
+			let markerId = trValuesNoHtmlTags[1]
 			trValues[k].setAttribute('id',trValuesNoHtmlTags[2]) // First Column is set as ID which can then be referred with: "<a href="#ID">Value</a>"
 			// trValuesNoHtmlTags.splice(-2,1); // Remove Longitude Value
 			// trValuesNoHtmlTags.splice(-1,1); // Remove Latitude Value
@@ -62,7 +64,7 @@ function synchronizeMap() {
 			}
 			label = trValuesArray.join('</br>');
 			globalPointsArray.push([latitude, longitude, label]);
-			createPoint(latitude, longitude, label);
+			createPoint(latitude, longitude, label, markerId);
 			trValuesArray = [];
 			trHeadersArray = [];
 		}
@@ -167,8 +169,18 @@ function createPolygon(polyPointsValues, polyPointsColor, polyPointsTooltip) {
 	new L.polygon(polyPointsValues).setStyle({fillColor: polyPointsColor, color: polyPointsColor, className: lower_case_snake_case_polygon_tooltip}).addTo(map).bindTooltip(polyPointsTooltip, {permanent: true, direction:"center"});
 }
 
-function createPoint(latitude, longitude, label) {
-	new L.marker([latitude,longitude]).bindPopup(label + '</br>').addTo(map);
+function createPoint(latitude, longitude, label, markerId) {
+	markers[markerId] = new L.marker([latitude,longitude]).bindPopup(label + '</br>').addTo(map);
+}
+
+function hidePoint(markerId) {
+	markers[markerId]._icon.style.display = "none"
+	markers[markerId]._shadow.style.display = "none"
+}
+
+function showPoint(markerId) {
+	markers[markerId]._icon.style.display = ""
+	markers[markerId]._shadow.style.display = ""
 }
 
 function allowsExportForWeb() {
@@ -324,12 +336,19 @@ function changeMapCursorPointer() {
 	} else {
 		document.getElementById('map_research').style.cursor = "";
 	}
-	if (selectMapPinPointAction == 1) {
+	if (selectMapPinPointAction == 1 || selectMapPinPointAction == 3) {
 		document.getElementById('inputCreatedAssociationPinPointToIdLabel').style.display = '';
 		document.getElementById('inputCreatedAssociationPinPointToId').style.display = '';
 	} else {
 		document.getElementById('inputCreatedAssociationPinPointToId').style.display = 'none';
 		document.getElementById('inputCreatedAssociationPinPointToIdLabel').style.display = 'none';
+	}
+	if (selectMapPinPointAction == 3) {
+		document.getElementById('pinPointDeleteButton').disabled = false
+		document.getElementById('pinPointSaveButton').disabled = true
+	} else {
+		document.getElementById('pinPointSaveButton').disabled = false
+		document.getElementById('pinPointDeleteButton').disabled = true
 	}
 	if (selectMapPinPointAction == 2) {
 		document.getElementById('inputPolygonColor').style.display = '';

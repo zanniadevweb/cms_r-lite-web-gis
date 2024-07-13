@@ -207,6 +207,7 @@ csvValues = [];
 function mapActionsAfterFinishLoadingFile() {
 		synchronizeMap();
 		document.getElementById('optionCreatePoint').style = '';
+		document.getElementById('optionDeletePoint').style = '';
 		document.getElementById('inputCreatedAssociationPinPointToId').value = '0'
 		document.getElementById('fileButton').disabled = false
 		document.getElementById('filePolygonsInput').disabled = false

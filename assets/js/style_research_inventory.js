@@ -27,7 +27,7 @@
 		var allSavedPopLocation = [];
 
 		function saveCurrPinPoint() {
-			if (document.getElementById('pinPointButton').disabled == false) {
+			if (document.getElementById('pinPointSaveButton').disabled == false) {
 				allSavedPopLocation.push(currPopLocation);
 				document.getElementById('inputSavedPinPoints').value = ''
 				document.getElementById('inputSavedPinPoints').value = allSavedPopLocation.slice(-1);
@@ -37,13 +37,7 @@
 				if (selectMapPinPointAction == 1) {
 					if (document.getElementById('inputSavedPinPoints').value.slice(-1) !== '') {
 						var idToSearch = document.getElementById('inputCreatedAssociationPinPointToId').value;
-						var table = '';
-						table = document.getElementById("tableResearchInventory");
-						var trValues = '';
-						trValues = table.getElementsByTagName("tbody")[0].rows;
-						currTrValue = trValues[idToSearch];
-						currTrValue.lastChild.previousSibling.innerHTML = currPopLocation.lat // LATITUDE
-						currTrValue.lastChild.innerHTML = currPopLocation.lng // LONGITUDE
+						replaceLatAndLng(idToSearch, currPopLocation.lat, currPopLocation.lng)
 					}
 				} else if (selectMapPinPointAction == 2) {
 					var tmpSavedPinPointValue = '';
@@ -60,6 +54,29 @@
 					}
 				}
 			}
+		}
+
+		function deleteCurrPinPoint() {
+			var selectMapPinPointAction = document.getElementById('selectMapPinPointAction').value
+			if (document.getElementById('pinPointDeleteButton').disabled == false) {
+				if (selectMapPinPointAction == 3) {
+					var idToSearch = document.getElementById('inputCreatedAssociationPinPointToId').value;
+					if (confirm('Click OK to confirm DELETE of ID: '+idToSearch)) {
+						replaceLatAndLng(idToSearch, "", "")
+				    	hidePoint(idToSearch)
+				    }
+				}
+			}
+		}
+
+		function replaceLatAndLng(idToSearch, newLat, newLng) {
+			var table = '';
+			table = document.getElementById("tableResearchInventory");
+			var trValues = '';
+			trValues = table.getElementsByTagName("tbody")[0].rows;
+			currTrValue = trValues[idToSearch];
+			currTrValue.lastChild.previousSibling.innerHTML = newLat // LATITUDE
+			currTrValue.lastChild.innerHTML = newLng // LONGITUDE
 		}
 
 		function saveCurrPinPointsPolygon() {
@@ -92,9 +109,13 @@
 						var popLocation = e.latlng;
 						document.getElementById('inputCreatedPinPoint').value = popLocation
 						currPopLocation = popLocation;
-						document.getElementById('pinPointButton').disabled = false;
+						document.getElementById('pinPointSaveButton').disabled = false;
 						var popup = L.popup().setLatLng(popLocation).setContent('Mon nouveau point').openOn(map);
 					}
+					// if (selectMapPinPointAction == 3)
+					// {
+						// TODO
+					// }
 				});
 		});
 
