@@ -58,10 +58,12 @@
 					Action curseur sur carte :
 					<select id="selectMapPinPointAction" onchange="changeMapCursorPointer()" style="display: inline;width:15%">
 						<option value="0">Rien</option>
-						<option id="optionCreatePoint" value="1" style="display: none;">Création de points</option>
+						<option id="optionCreatePoint" value="1" style="display: none;" selected>Création de points</option>
 						<option id="optionCreatePolygon" value="2" style="display: none;">Création de polygones</option>
+						<option id="optionDeletePoint" value="3" style="display: none;">Suppression de points</option>
 					</select>
-					<button id="pinPointButton" onclick="saveCurrPinPoint()" disabled>Sauvegarder Point Courant</button>
+					<button id="pinPointSaveButton" onclick="saveCurrPinPoint()" disabled>Sauvegarder Point Courant</button>
+					<button id="pinPointDeleteButton" onclick="deleteCurrPinPoint()" disabled>Supprimer Point Courant</button>
 					<button id="pinPointsPolygonButton" onclick="saveCurrPinPointsPolygon()" disabled>Sauvegarder Polygone Courant</button></br>
 					<div id="inputCreatedPinPointLabel" style="display:none;">Valeur point courant : <input id="inputCreatedPinPoint" type="text" disabled style="display:none;"></div>
 					<div id="inputCreatedAssociationPinPointToIdLabel" style="display: none;">ID associé : <input id="inputCreatedAssociationPinPointToId" val="1" type="number" min="0" step="1" style="display: none;background:#858585;"></div>
@@ -106,6 +108,8 @@
 
 			<script>
 				document.addEventListener("DOMContentLoaded", () => {
+					document.getElementById('selectMapPinPointAction')[0] .setAttribute('selected', 'selected')
+					changeMapCursorPointer();
 					sortTable('inputFilterAction','tableResearchInventory',0)
 					noRegions();
 				});
