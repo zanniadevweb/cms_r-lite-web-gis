@@ -3,6 +3,9 @@ headers = [];
 lineValues = [];
 globalPointsArray = [];
 markers = [];
+polygons = [];
+currentClickedPolygon = "";
+currentClickedPolygonLabel = "";
 // ----------------------------------------------------------
 // ------------------- SUPER VARIABLES LOCALES -------------------
 var isHeadersArrayAlreadyFilled = false;
@@ -166,12 +169,17 @@ function fillPolygonsLoop(polygonLinesFromFile) {
 			currPolyPointsTooltip = '';
 		}
 	}
+	addIdsAndClassesToPolygonsTooltips()
 }
 
 function createPolygon(polyPointsValues, polyPointsColor, polyPointsTooltip) {
 	let lower_case_snake_case_polygon_tooltip = polyPointsTooltip.toLowerCase().replaceAll(' ','_').replaceAll('(','').replaceAll(')','')
-	// console.log(lower_case_snake_case_polygon_tooltip)
+	polygons[lower_case_snake_case_polygon_tooltip] =
 	new L.polygon(polyPointsValues).setStyle({fillColor: polyPointsColor, color: polyPointsColor, className: lower_case_snake_case_polygon_tooltip}).addTo(map).bindTooltip(polyPointsTooltip, {permanent: true, direction:"center"});
+	polygons[lower_case_snake_case_polygon_tooltip]._path.setAttribute('id',lower_case_snake_case_polygon_tooltip) 
+	polygons[lower_case_snake_case_polygon_tooltip].addEventListener("click", highlightClickedPolygon, false);
+	polygons[lower_case_snake_case_polygon_tooltip].polygonId = lower_case_snake_case_polygon_tooltip;
+	polygons[lower_case_snake_case_polygon_tooltip].polygonLabel = polyPointsTooltip;
 }
 
 function createPoint(latitude, longitude, label, markerId) {
@@ -191,6 +199,20 @@ function hideTmpPolygonPoint(markerId) {
 function showPoint(markerId) {
 	markers[markerId]._icon.style.display = ""
 	markers[markerId]._shadow.style.display = ""
+}
+
+function highlightClickedPolygon(evt) {
+	 if (document.getElementById('selectMapPinPointAction').value == 4) {
+		let evtPolygonId = evt.target.polygonId
+		currentClickedPolygon = evtPolygonId
+		currentClickedPolygonLabel = evt.target.polygonLabel
+		let fillOpacity = 'fill-opacity'
+		let allPolygons = document.getElementById(evtPolygonId).parentNode.children 
+		for (var i = 0; i < allPolygons.length; i++) {
+			allPolygons[i].setAttribute(fillOpacity,0.2)
+		}
+		document.getElementById(evtPolygonId).setAttribute(fillOpacity,0.8)
+	}
 }
 
 function allowsExportForWeb() {
@@ -221,11 +243,11 @@ function smallScreen() {
 }
 
 function change_state(obj){
-		if (obj.checked){
-				obj.parentNode.classList.add("checked");
-		} else{
-				obj.parentNode.classList.remove("checked");
-		}
+	if (obj.checked){
+			obj.parentNode.classList.add("checked");
+	} else{
+			obj.parentNode.classList.remove("checked");
+	}
 }
 
 function changeScreenSize() {
@@ -267,6 +289,14 @@ function noLabels() {
 	}
 }
 
+function addIdsAndClassesToPolygonsTooltips() {
+	var tooltips = document.getElementsByClassName('leaflet-tooltip-pane')[0].children;
+    for (var iToolTips = 0; iToolTips < tooltips.length ; iToolTips++) {
+        let lower_case_snake_case_polygon_tooltip = tooltips[iToolTips].innerText.toLowerCase().replaceAll(' ','_').replaceAll('(','').replaceAll(')','')+'_tooltip'
+		tooltips[iToolTips].setAttribute('id',lower_case_snake_case_polygon_tooltip) 
+    }
+}
+
 function withLabels() {
 	var tooltips = document.getElementsByClassName('leaflet-tooltip-pane')[0].children;
 	for (var iToolTips = 0; iToolTips < tooltips.length ; iToolTips++) {
@@ -279,9 +309,9 @@ function noRegions() {
 	for (var iToolTips = 0; iToolTips < tooltips.length ; iToolTips++) {
 		tooltips[iToolTips].style.display= 'none';
 	}
-	var polygons = document.querySelectorAll("path:not(.leaflet-marker)");
-	for (var iPolygons = 0; iPolygons < polygons.length ; iPolygons++) {
-		polygons[iPolygons].style.display= 'none';
+	var polygonsSelect = document.querySelectorAll("path:not(.leaflet-marker)");
+	for (var iPolygons = 0; iPolygons < polygonsSelect.length ; iPolygons++) {
+		polygonsSelect[iPolygons].style.display= 'none';
 	}
 }
 
@@ -290,9 +320,9 @@ function withRegions() {
 	for (var iToolTips = 0; iToolTips < tooltips.length ; iToolTips++) {
 		tooltips[iToolTips].style.display= '';
 	}
-	var polygons = document.querySelectorAll("path:not(.leaflet-marker)");
-	for (var iPolygons = 0; iPolygons < polygons.length ; iPolygons++) {
-		polygons[iPolygons].style.display= '';
+	var polygonsSelect = document.querySelectorAll("path:not(.leaflet-marker)");
+	for (var iPolygons = 0; iPolygons < polygonsSelect.length ; iPolygons++) {
+		polygonsSelect[iPolygons].style.display= '';
 	}
 }
 
@@ -339,8 +369,9 @@ function tileMapLayer(src) {
 function changeMapCursorPointer() {
 	var selectMapPinPointAction = document.getElementById('selectMapPinPointAction').value;
 	document.getElementById('pinPointsPolygonButton').disabled = true
+	document.getElementById('pinPointsDeletePolygon').disabled = true
 
-	if (selectMapPinPointAction == 1 || selectMapPinPointAction == 2)
+	if (selectMapPinPointAction == 1 || selectMapPinPointAction == 2 || selectMapPinPointAction == 4)
 	{
 		document.getElementById('map_research').style.cursor = "pointer";
 	} else {
@@ -356,9 +387,15 @@ function changeMapCursorPointer() {
 	if (selectMapPinPointAction == 3) {
 		document.getElementById('pinPointDeleteButton').disabled = false
 		document.getElementById('pinPointSaveButton').disabled = true
-	} else {
-		document.getElementById('pinPointSaveButton').disabled = false
+		document.getElementById('pinPointsDeletePolygon').disabled = true
+	} else if (selectMapPinPointAction == 4) {
 		document.getElementById('pinPointDeleteButton').disabled = true
+		document.getElementById('pinPointSaveButton').disabled = true
+		document.getElementById('pinPointsDeletePolygon').disabled = false
+	} else {
+		document.getElementById('pinPointDeleteButton').disabled = true
+		document.getElementById('pinPointSaveButton').disabled = false
+		document.getElementById('pinPointsDeletePolygon').disabled = true
 	}
 	if (selectMapPinPointAction == 2) {
 		document.getElementById('inputPolygonColor').style.display = '';

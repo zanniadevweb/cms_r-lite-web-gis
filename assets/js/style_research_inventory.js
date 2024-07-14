@@ -146,6 +146,26 @@
 			document.getElementById('pinPointsPolygonButton').disabled = true;
 		}
 
+		function deleteCurrPolygon() {
+			if (currentClickedPolygon !== "") {
+				if (confirm('Click OK to confirm DELETE of ID: '+currentClickedPolygonLabel)) {
+					document.getElementById(currentClickedPolygon).remove();
+					document.getElementById(currentClickedPolygon+'_tooltip').remove();
+					tmpPolyValuesDelete = document.getElementById('tmpFilePolygonsContent').value.split('|')
+					for (var iPolDel = 0; iPolDel < tmpPolyValuesDelete.length ; iPolDel++) {
+						if (tmpPolyValuesDelete[iPolDel].includes(currentClickedPolygonLabel)){
+							tmpPolyValuesDelete[iPolDel] = ""
+						}
+					}
+					tmpPolyValuesDelete = tmpPolyValuesDelete.filter(item => item)
+					tmpPolyValuesDelete = tmpPolyValuesDelete.join('|')
+					document.getElementById('tmpFilePolygonsContent').value = tmpPolyValuesDelete
+					currentClickedPolygon = ""
+					currentClickedPolygonLabel = ""
+				}
+			}
+		}
+
 		document.addEventListener("DOMContentLoaded", () => {
 				map.on('click', function(e) {
 					var selectMapPinPointAction = document.getElementById('selectMapPinPointAction').value
@@ -157,10 +177,6 @@
 						document.getElementById('pinPointSaveButton').disabled = false;
 						var popup = L.popup().setLatLng(popLocation).setContent('Mon nouveau point').openOn(map);
 					}
-					// if (selectMapPinPointAction == 3)
-					// {
-						// TODO
-					// }
 				});
 		});
 
