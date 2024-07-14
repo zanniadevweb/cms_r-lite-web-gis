@@ -41,6 +41,7 @@
 						new L.marker([currPopLocation.lat,currPopLocation.lng]).addTo(map);
 						var idToSearch = document.getElementById('inputCreatedAssociationPinPointToId').value;
 						replaceLatAndLng(idToSearch, currPopLocation.lat, currPopLocation.lng)
+						mapActionsAfterFinishLoadingFile(); // TODO
 					}
 				} else if (selectMapPinPointAction == 2) {
 					if (document.getElementById('inputSavedPinPointsPolygons').value === "") {
