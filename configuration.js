@@ -36,3 +36,24 @@ function romanFrontiersFirstCentury() {
         withLabels();
     }
 }
+
+selectedMapLayerReady = 'OpenStreetMap'
+
+document.addEventListener("DOMContentLoaded", () => {
+    if (selectedMapLayerReady === 'OpenStreetMap') {
+        tileMapLayerOpenStreetMap()
+    } else if (selectedMapLayerReady === 'OpenTopoMap') {
+        tileMapLayerOpenTopoMap()
+    } else if (selectedMapLayerReady === 'Satellite') {
+        tileMapLayerSatellite()
+    } else if (selectedMapLayerReady === 'ReliefEsri') {
+        tileMapLayerEsriRelief()
+    } else if (selectedMapLayerReady === 'DareMap') {
+        tileMapDare()
+    } else {
+        tileMapLayerOpenStreetMap()
+    }
+});
+
+columnNumberMapDisplay = 2;
+
