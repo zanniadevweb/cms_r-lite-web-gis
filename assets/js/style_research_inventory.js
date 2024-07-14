@@ -25,24 +25,32 @@
 
 		var currPopLocation = '';
 		var allSavedPopLocation = [];
+		var tmpMarkers = [];
+		var iteratorPolygon = 0;
 
 		function saveCurrPinPoint() {
 			if (document.getElementById('pinPointSaveButton').disabled == false) {
+				iteratorPolygon++;
 				allSavedPopLocation.push(currPopLocation);
 				document.getElementById('inputSavedPinPoints').value = ''
 				document.getElementById('inputSavedPinPoints').value = allSavedPopLocation.slice(-1);
-				var marker = new L.marker([currPopLocation.lat,currPopLocation.lng]).addTo(map);
 				var selectMapPinPointAction = document.getElementById('selectMapPinPointAction').value
 
 				if (selectMapPinPointAction == 1) {
 					if (document.getElementById('inputSavedPinPoints').value.slice(-1) !== '') {
+						new L.marker([currPopLocation.lat,currPopLocation.lng]).addTo(map);
 						var idToSearch = document.getElementById('inputCreatedAssociationPinPointToId').value;
 						replaceLatAndLng(idToSearch, currPopLocation.lat, currPopLocation.lng)
 					}
 				} else if (selectMapPinPointAction == 2) {
-					var tmpSavedPinPointValue = '';
-
+					if (document.getElementById('inputSavedPinPointsPolygons').value === "") {
+						document.getElementById('pinPointDeleteButton').disabled = true;
+						document.getElementById('pinPointsPolygonButton').disabled = true;
+					}
 					if (document.getElementById('inputSavedPinPoints').value !== '') {
+						tmpMarkers[iteratorPolygon] = new L.marker([currPopLocation.lat,currPopLocation.lng]).addTo(map);
+						tmpMarkers = tmpMarkers.filter(item => item)
+						document.getElementById('pinPointDeleteButton').disabled = false;
 						tmpSavedPinPointsPolygonsVal = document.getElementById('inputSavedPinPointsPolygons').value;
 						document.getElementById('pinPointsPolygonButton').disabled = false;
 
@@ -57,9 +65,36 @@
 		}
 
 		function deleteCurrPinPoint() {
-			var selectMapPinPointAction = document.getElementById('selectMapPinPointAction').value
-			if (document.getElementById('pinPointDeleteButton').disabled == false) {
-				if (selectMapPinPointAction == 3) {
+			if (document.getElementById('pinPointDeleteButton').disabled === false) {
+				var selectMapPinPointAction = document.getElementById('selectMapPinPointAction').value
+				if (selectMapPinPointAction == 2) {
+					if (document.getElementById('inputSavedPinPointsPolygons').value === "") {
+						document.getElementById('pinPointDeleteButton').disabled = true;
+						document.getElementById('pinPointsPolygonButton').disabled = true;
+					} else {	
+						hideTmpPolygonPoint(tmpMarkers.length-1)
+						if (tmpMarkers.length === 1) {
+							document.getElementById('inputSavedPinPointsPolygons').value = ""
+							tmpMarkers = []
+						} else {
+							tmpMarkers.pop()
+							tmpMarkers = tmpMarkers.filter(item => item)
+							tmpPolygonValues = document.getElementById('inputSavedPinPointsPolygons').value.split('],[').filter(item => item)
+							lastPolygonValue = tmpPolygonValues.pop()
+							tmpPolygonValues[lastPolygonValue] = ''
+							newPolygonValues = tmpPolygonValues.filter(item => item)
+							if (newPolygonValues.length > 0) {
+								document.getElementById('inputSavedPinPointsPolygons').value = newPolygonValues.join('],[')+(']')
+							} else {
+								document.getElementById('inputSavedPinPointsPolygons').value = ""
+							}
+						}
+					}
+					if (document.getElementById('inputSavedPinPointsPolygons').value === "") {
+						document.getElementById('pinPointDeleteButton').disabled = true;
+						document.getElementById('pinPointsPolygonButton').disabled = true;
+					}
+				} else if (selectMapPinPointAction == 3) {
 					var idToSearch = document.getElementById('inputCreatedAssociationPinPointToId').value;
 					if (confirm('Click OK to confirm DELETE of ID: '+idToSearch)) {
 						replaceLatAndLng(idToSearch, "", "")
@@ -80,6 +115,11 @@
 		}
 
 		function saveCurrPinPointsPolygon() {
+			for (var itTmpMarker=0; itTmpMarker < tmpMarkers.length; itTmpMarker++) {
+				hideTmpPolygonPoint(itTmpMarker)
+			}
+			iteratorPolygon = 0;
+			tmpMarkers = [];
 			var defaultPolygonColor = '#0000FF';
 			if (document.getElementById('inputPolygonColor').value !== '') {
 				defaultPolygonColor = '#' + document.getElementById('inputPolygonColor').value;
@@ -90,15 +130,19 @@
 			}
 			var currValueTmpFilePolygonContent = '';
 			currValueTmpFilePolygonContent = document.getElementById('tmpFilePolygonsContent').value;
-			document.getElementById('tmpFilePolygonsContent').value =
-			currValueTmpFilePolygonContent
-			+
-			'|' +
-			'(' + document.getElementById('inputSavedPinPointsPolygons').value + ')' +
-			'.color('+defaultPolygonColor+')' +
-			'.tooltip('+defaultPolygonTooltip+')'
-			;
-			document.getElementById('inputSavedPinPointsPolygons').value = '';
+			if (document.getElementById('inputSavedPinPointsPolygons').value !== "") {
+				document.getElementById('tmpFilePolygonsContent').value =
+				currValueTmpFilePolygonContent
+				+
+				'|' +
+				'(' + document.getElementById('inputSavedPinPointsPolygons').value + ')' +
+				'.color('+defaultPolygonColor+')' +
+				'.tooltip('+defaultPolygonTooltip+')'
+				;
+				document.getElementById('inputSavedPinPointsPolygons').value = '';
+			}
+			document.getElementById('pinPointDeleteButton').disabled = true;
+			document.getElementById('pinPointsPolygonButton').disabled = true;
 		}
 
 		document.addEventListener("DOMContentLoaded", () => {

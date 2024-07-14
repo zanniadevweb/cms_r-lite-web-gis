@@ -178,6 +178,11 @@ function hidePoint(markerId) {
 	markers[markerId]._shadow.style.display = "none"
 }
 
+function hideTmpPolygonPoint(markerId) {
+	tmpMarkers[markerId]._icon.style.display = "none"
+	tmpMarkers[markerId]._shadow.style.display = "none"
+}
+
 function showPoint(markerId) {
 	markers[markerId]._icon.style.display = ""
 	markers[markerId]._shadow.style.display = ""
@@ -329,6 +334,7 @@ function tileMapLayer(src) {
 
 function changeMapCursorPointer() {
 	var selectMapPinPointAction = document.getElementById('selectMapPinPointAction').value;
+	document.getElementById('pinPointsPolygonButton').disabled = true
 
 	if (selectMapPinPointAction == 1 || selectMapPinPointAction == 2)
 	{
@@ -357,6 +363,9 @@ function changeMapCursorPointer() {
 		document.getElementById('inputPolygonTooltipLabel').style.display = '';
 		document.getElementById('inputSavedPinPointsPolygons').style.display = '';
 		document.getElementById('inputSavedPinPointsPolygonsLabel').style.display = '';
+        if (document.getElementById('inputSavedPinPoints').value !== "") {
+			document.getElementById('pinPointDeleteButton').disabled = false;
+		}
 	} else {
 		document.getElementById('inputPolygonColor').style.display = 'none';
 		document.getElementById('inputPolygonColorLabel').style.display = 'none';
