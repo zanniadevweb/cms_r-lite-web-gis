@@ -61,10 +61,12 @@
 						<option id="optionCreatePoint" value="1" style="display: none;" selected>Création de points</option>
 						<option id="optionCreatePolygon" value="2" style="display: none;">Création de polygones</option>
 						<option id="optionDeletePoint" value="3" style="display: none;">Suppression de points</option>
+						<option id="optionDeletePolygon" value="4" style="display: none;">Suppression de polygones</option>
 					</select>
 					<button id="pinPointSaveButton" onclick="saveCurrPinPoint()" disabled>Sauvegarder Point Courant</button>
 					<button id="pinPointDeleteButton" onclick="deleteCurrPinPoint()" disabled>Supprimer Point Courant</button>
 					<button id="pinPointsPolygonButton" onclick="saveCurrPinPointsPolygon()" disabled>Sauvegarder Polygone Courant</button></br>
+					<button id="pinPointsDeletePolygon" onclick="deleteCurrPolygon()" disabled>Supprimer Polygone en sélection</button></br>
 					<div id="inputCreatedPinPointLabel" style="display:none;">Valeur point courant : <input id="inputCreatedPinPoint" type="text" disabled style="display:none;"></div>
 					<div id="inputCreatedAssociationPinPointToIdLabel" style="display: none;">ID associé : <input id="inputCreatedAssociationPinPointToId" val="1" type="number" min="0" step="1" style="display: none;background:#858585;"></div>
 					<div id="inputSavedPinPointsLabel" style="display: none">Valeur point sauvegardé : <input id="inputSavedPinPoints" type="text" disabled style="display: none"></div>
