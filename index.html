@@ -109,6 +109,10 @@
 			<script>
 				document.addEventListener("DOMContentLoaded", () => {
 					document.getElementById('selectMapPinPointAction')[0] .setAttribute('selected', 'selected')
+					document.getElementById('inputSavedPinPoints').value = ""
+					document.getElementById('inputSavedPinPointsPolygons').value = ""
+					document.getElementById('inputPolygonColor').value = ""
+					document.getElementById('inputPolygonTooltip').value = ""
 					changeMapCursorPointer();
 					sortTable('inputFilterAction','tableResearchInventory',0)
 					noRegions();
