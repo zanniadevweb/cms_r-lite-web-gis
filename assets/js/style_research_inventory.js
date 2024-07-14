@@ -166,8 +166,8 @@
 
 		function zoomOnMapPoint(currentPlaneElement) {
 			coordinatesZoomOn = currentPlaneElement.getAttribute('value').split(',');
-			coordinateZoomOnX = coordinatesZoomOn[1];
-			coordinateZoomOnY = coordinatesZoomOn[0];
+			coordinateZoomOnX = coordinatesZoomOn[0];
+			coordinateZoomOnY = (coordinatesZoomOn[1].split('('))[0];
 			map.setView([coordinateZoomOnX, coordinateZoomOnY], 18);
 		}
 

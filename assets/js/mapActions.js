@@ -42,6 +42,11 @@ function synchronizeMap() {
 
 		if (latitude !== '' && longitude !== '') {
 			trValuesNoHtmlTags = trValues[k].innerHTML.replaceAll('</td>','').split('<td>');
+			if (typeof(columnNumberMapDisplay) !== 'undefined' && columnNumberMapDisplay !== undefined && trValuesNoHtmlTags[columnNumberMapDisplay] !== undefined) {
+				var subsidiaryMapDisplay = ' ('+trValuesNoHtmlTags[columnNumberMapDisplay]+')'
+			} else {
+				var subsidiaryMapDisplay = ""
+			}
 			let markerId = trValuesNoHtmlTags[1]
 			trValues[k].setAttribute('id',trValuesNoHtmlTags[2]) // First Column is set as ID which can then be referred with: "<a href="#ID">Value</a>"
 			// trValuesNoHtmlTags.splice(-2,1); // Remove Longitude Value
@@ -56,7 +61,7 @@ function synchronizeMap() {
 				}
 				if (trValuesNoHtmlTags[itrValuesNoHtml] !== '') {
 					if (itrValuesNoHtml === 1) {
-						mapPointsLegendArray.push('[' + trValuesNoHtmlTags[itrValuesNoHtml] + ']' + ' = ' + longitude + ', ' + latitude);
+						mapPointsLegendArray.push('[' + trValuesNoHtmlTags[itrValuesNoHtml] + ']' + ' = ' + latitude + ', ' + longitude + subsidiaryMapDisplay);
 						fillLineValuesArray(mapPointsLegendArray);
 					}
 					trValuesArray.push(trHeadersArray[itrValuesNoHtml-1].toUpperCase() + ' = ' +  trValuesNoHtmlTags[itrValuesNoHtml]);
@@ -290,7 +295,6 @@ function withRegions() {
 		polygons[iPolygons].style.display= '';
 	}
 }
-
 
 function tileMapLayerOpenStreetMap() {
 	tileMapLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
