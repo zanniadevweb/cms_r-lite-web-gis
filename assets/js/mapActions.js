@@ -105,7 +105,8 @@ function fillLegend() {
 		div.innerHTML += '<button id="tileMapLayerOpenTopoMap" onclick="tileMapLayerOpenTopoMap()" style="background: #d93616; font-size:15px; background-image:url(\'https://c.tile.opentopomap.org/5/15/11.png\')">Open Topo Map</button><br>'
 		div.innerHTML += '<button id="tileMapLayerSatellite" onclick="tileMapLayerSatellite()" style="background: #d93616; font-size:15px; background-image:url(\'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/11/15\')">Satellite Map (ESRI)</button><br>'
 		div.innerHTML += '<button id="tileMapLayerEsriRelief" onclick="tileMapLayerEsriRelief()" style="background: #d93616; font-size:15px; background-image:url(\'https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/5/11/15\')">Relief Map (ESRI)</button><br>'
-		div.innerHTML += '<button id="tileMapDare" onclick="tileMapDare()" style="background: #d93616; font-size:15px; background-image:url(\'https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/5/11/15\')">DARE Map</button><br><br>'
+		div.innerHTML += '<button id="tileMapDare" onclick="tileMapDare()" style="background: #d93616; font-size:15px; background-image:url(\'https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/5/11/15\')">DARE Map</button><br>'
+		div.innerHTML += '<button id="tileMapBlank" onclick="tileMapBlank()" style="background: #d93616; font-size:15px; background-image:url(\'https://c.basemaps.cartocdn.com/light_nolabels/7/62/44.png\')">Blank Map</button><br><br>'
 		div.innerHTML += customMapLegend
 		div.innerHTML += "<h3>Map Points</h3><br>";
 		for (var iLinesVal = 0; iLinesVal < lineValues.length; iLinesVal++) {
@@ -349,6 +350,11 @@ function tileMapLayerEsriRelief() {
 function tileMapDare() {
 	tileMapLayer('https://dh.gu.se/tiles/imperium/{z}/{x}/{y}.png')
 	document.getElementById('selectedLayerMap').setAttribute('value', 'DareMap');
+}
+
+function tileMapBlank() {
+	tileMapLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png')
+	document.getElementById('selectedLayerMap').setAttribute('value', 'Blank');
 }
 
 function tileMapLayer(src) {
