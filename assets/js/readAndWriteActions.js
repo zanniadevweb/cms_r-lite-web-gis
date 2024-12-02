@@ -320,9 +320,9 @@ function importArrayIntoTable(list, tableId) {
 
 	// Create a table element
 	var table = document.createElement("table");
-	table.setAttribute("class", "sortable");
+	// table.setAttribute("class", "sortable");
 	table.setAttribute("id", "tableData");
-	sorttableJs();
+	// sorttableJs();
 
 	// Create theader
 	var thead = document.createElement("thead");
