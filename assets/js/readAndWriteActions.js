@@ -6,6 +6,34 @@ Value 1 Line 1;Value 2 Line 1;Value 3 Line 1;48.79394;2.3848870
 Value 1 Line 2;Value 2 Line 2;Value 3 Line 2;51.473379;-0.129398
 `;
 
+var fixtureJSONTemplate =
+`{
+	"headers": {
+		"0": "Header 1",
+		"1": "Header 2",
+		"2": "Header 3",
+		"3": "Latitude",
+		"4": "Longitude"
+	},
+	"rows": [
+		{
+			"0": "Value 1 Line 1",
+			"1": "Value 2 Line 1",
+			"2": "Value 3 Line 1",
+			"3": "48.79394",
+			"4": "2.3848870"
+		},
+		{
+			"0": "Value 1 Line 2",
+			"1": "Value 2 Line 2",
+			"2": "Value 3 Line 2",
+			"3": "51.473379",
+			"4": "-0.129398"
+		},
+	]
+}
+`;
+
 var fixturePolygonsTemplate = `
 ([35.073818,32.219737],[35.387587,32.933713],[35.434810,33.929625],[35.695093,34.614330],[35.256421,33.970977],[34.953658,34.156251],[34.506089,32.944560],[34.705176,32.393046]).color('#eb4034').tooltip("Roman Republic (Cyprus)")\r
 ([36.341483,27.548598],[36.898039,27.291802],[37.676513,27.072361],[37.866057,27.067437],[37.886023,26.499002],[38.071909,26.117186],[38.647997,26.173894],[38.628259,25.760160],[38.029572,24.617950],[37.645101,24.157276],[36.637734,24.277529],[36.270581,25.789371]).color('#eb4034').tooltip("Roman Republic (Cyclades)")\r
@@ -250,6 +278,20 @@ function loadCsvContentIntoPage()
 	mapActionsAfterFinishLoadingFile();
 }
 
+function loadJsonContentIntoPage(fileContent)
+{
+	var jsonInput = JSON.parse(fileContent);
+	jsonValues = [];
+	rows = jsonInput.rows;
+	numberRows = rows.length
+	jsonValues.push(jsonInput.headers);
+	for(var i = 0; i < numberRows; i++) {
+		jsonValues.push(rows[i]);
+	}
+	importArrayIntoTable(jsonValues, 'tableResearchInventory');
+	mapActionsAfterFinishLoadingFile();
+}
+
 function readFile(input) {
 	var fileContent = '';
 	var fileContentSeparatedLines = [];
@@ -278,6 +320,21 @@ function readFile(input) {
 		allowsExportForWeb();
 	};
 
+	reader.onerror = function() {
+		console.log(reader.error);
+	};
+}
+
+function readFileJson(input) {
+	var fileContent = '';
+	let file = input.files[0];
+	let reader = new FileReader();
+	reader.readAsText(file, 'UTF-8');
+	reader.onload = function() {
+		fileContent = reader.result
+		loadJsonContentIntoPage(fileContent);
+		allowsExportForWeb();
+	};
 	reader.onerror = function() {
 		console.log(reader.error);
 	};
@@ -498,6 +555,10 @@ function importArrayIntoTable(list, tableId) {
 
 function downloadCsvTemplate() {
 	download(fixtureCSVTemplate, 'template');
+}
+
+function downloadJsonTemplate() {
+	download(fixtureJSONTemplate, 'template', 'text/json', '.json');
 }
 
 function downloadPolygonsTemplate() {
