@@ -239,6 +239,7 @@ function mapActionsAfterFinishLoadingFile() {
 		document.getElementById('optionDeletePolygon').style = '';
 		document.getElementById('inputCreatedAssociationPinPointToId').value = '0'
 		document.getElementById('fileButton').disabled = false
+		document.getElementById('fileJsonButton').disabled = false
 		document.getElementById('filePolygonsInput').disabled = false
 		document.getElementById('polygonsTemplateButton').disabled = false
 }
@@ -488,6 +489,7 @@ function importArrayIntoTable(list, tableId) {
 	var tmpIdTable = '';
 	var realIdTable = '';
 	var tableToCsvValues = [];
+	var tableToJsonValues = [];
 	var tableChildCellOneLine = [];
 	var tableOneLine = [];
 	var trHeadersStr = '';
@@ -546,11 +548,62 @@ function importArrayIntoTable(list, tableId) {
 			}
 	}
 
+	const getJson = async function () {
+		table = document.getElementById("tableResearchInventory");
+		trHeadersStr = document.getElementById("tableResearchInventory").getElementsByTagName("thead")[0].outerHTML;
+		trHeadersValues.push(trHeadersStr.replace('<th>','').replace('<thead>','').replace('</thead>','').split('</th>'))
+		if (table !== undefined && table.getElementsByTagName("tbody")[0] !== undefined) {
+			trValues = table.getElementsByTagName("tbody")[0].rows;
+			console.log(trValues)
+			for (var k = 0; k < trValues.length; k++) {
+				tableChildCellOneLine = trValues[k].children
+				for (var childCell = 0; childCell < tableChildCellOneLine.length; childCell++) {
+					strChildCellValue = tableChildCellOneLine[childCell].innerHTML;
+					strChildCellJson = `"`+(childCell-1).toString()+`"`+`: "`+strChildCellValue+`"`
+					tableOneLine.push(strChildCellJson)
+				}
+				childCell = 0
+				tableOneLine.shift();
+				tableToJsonValues.push(tableOneLine);
+				tableOneLine = [];
+			}
+			var data =  '';
+			var currHeader = '';
+			var currLine = 0;
+			var cleanHeaders = []
+			for (var objIt = 0; objIt < trHeadersValues.length; objIt++) {
+				if (trHeadersValues[objIt] !== undefined) {
+					for (var arrIt = 0; arrIt < trHeadersValues[objIt].length; arrIt++) {
+						currHeader = trHeadersValues[objIt][arrIt].replace('<th>','');
+						if (currHeader !== 'ID' && currHeader !== '') {
+							currHeaderJson = `"`+(arrIt).toString()+`"`+`: "`+currHeader+`"`
+							cleanHeaders.push(currHeaderJson)
+						}
+					}
+				}
+			}
+			tableToJsonValuesStrTmp = [];
+			for (var jsonIt = 0; jsonIt < tableToJsonValues.length; jsonIt++) {
+				tableToJsonValuesStrTmp.push(`{`+tableToJsonValues[jsonIt]+`}`)
+			}
+			tableToJsonValuesStr = `"rows": [`+tableToJsonValuesStrTmp.toString()+`]`;
+			singleHeaderValues = `"headers": {`+cleanHeaders.join(', ')+`}`;
+			data = `{`+singleHeaderValues.concat(','+tableToJsonValuesStr)+`}`
+			singleHeaderValues = [];
+			trHeadersValues = [];
+			currLine = 0;
+			tableToJsonValues = [];
+			download(data, 'result', 'text/json', '.json');
+		}
+	}
+
 	// Getting element by id and adding
 	// eventlistener to listen everytime
 	// button get pressed
 	const btn = document.getElementById('fileButton');
 	btn.addEventListener('click', get);
+	const btnJson = document.getElementById('fileJsonButton');
+	btnJson.addEventListener('click', getJson);
 // ---------------- SAVE FILE BUTTON ACTIONS --------------
 
 function downloadCsvTemplate() {
