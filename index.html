@@ -33,9 +33,13 @@
 						<div class="inner">
 							<h2>Menu</h2>
 							<ul class="links">
-								<li><b>1. Charger CSV : </b><input id="fileInput" type="file" accept=".csv" onchange="readFile(this);"></li></br>
+								<li><b>0. Charger CSV : </b><input id="fileInput" type="file" accept=".csv" onchange="readFile(this);"></li></br>
 								<li><button id="fileButton" disabled>Enregistrer Fichier CSV</button></li></br>
 								<li><button onclick="downloadCsvTemplate()">Télécharger Template CSV</button></li></br>
+
+								<li style="padding-right: 300px;"><b>1. Charger Données (.json) : </b><input id="fileInput" type="file" accept=".json" onchange="readFileJson(this);"></li></br>
+								<li><button id="fileJsonButton" disabled>Enregistrer Fichier JSON</button></li></br>
+								<li><button onclick="downloadJsonTemplate()">Télécharger Template JSON</button></li></br>
 
 								<li><b>2. Charger Polygones : </b><input id="filePolygonsInput" type="file" accept=".txt" onchange="readFilePolygons(this)" disabled></li></br>
 								<li><button id="filePolygonsButton" disabled onclick="downloadPolygonFile()">Enregistrer Fichier des polygones</button></li></br>
