@@ -33,27 +33,28 @@
 						<div class="inner">
 							<h2>Menu</h2>
 							<ul class="links">
-								<li><b>0. Charger CSV : </b><input id="fileInput" type="file" accept=".csv" onchange="readFile(this);"></li></br>
-								<li><button id="fileButton" disabled>Enregistrer Fichier CSV</button></li></br>
-								<li><button onclick="downloadCsvTemplate()">Télécharger Template CSV</button></li></br>
-
+								<li style="padding-right: 300px;"><b>0. Importer fichier CSV : </b><input id="fileInput" type="file" accept=".csv" onchange="readFile(this);"></li></br>
+								<!-- <li><button onclick="downloadCsvTemplate()">Télécharger Template CSV</button></li></br> -->
+								
+								<li><button onclick="downloadJsonTemplate()">Télécharger modèle de données (.json)</button></li></br>
 								<li style="padding-right: 300px;"><b>1. Charger Données (.json) : </b><input id="fileInput" type="file" accept=".json" onchange="readFileJson(this);"></li></br>
-								<li><button id="fileJsonButton" disabled>Enregistrer Fichier JSON</button></li></br>
-								<li><button onclick="downloadJsonTemplate()">Télécharger Template JSON</button></li></br>
 
-								<li><b>2. Charger Polygones : </b><input id="filePolygonsInput" type="file" accept=".txt" onchange="readFilePolygons(this)" disabled></li></br>
+								<!-- <li><b>2. Charger Polygones : </b><input id="filePolygonsInput" type="file" accept=".txt" onchange="readFilePolygons(this)" disabled></li></br>
 								<li><button id="filePolygonsButton" disabled onclick="downloadPolygonFile()">Enregistrer Fichier des polygones</button></li></br>
-								<li><button id="polygonsTemplateButton" onclick="downloadPolygonsTemplate()" disabled>Télécharger Template Polygones</button></li></br>
+								<li><button id="polygonsTemplateButton" onclick="downloadPolygonsTemplate()" disabled>Télécharger Template Polygones</button></li></br> -->
+
+								<li><b>2. Exporter données au format : </b></br></br>
+									<li><button id="fileJsonButton" disabled>JSON (texte et relations)</button></li></br>
+									<li><button id="fileButton" disabled>CSV (texte uniquement)</button></li></br>
+								</li>
 
 								<li><b>3. Exporter carte pour le Web au format : </b>
 									<select id="selectExportForWebAction" disabled>
-										<option value="0">Points HTML (+ Polygones ?)</option>
+										<option value="0">Points et Polygones HTML</option>
 										<option value="1">Points KML Google Earth</option>
 									</select>
 								</li></br>
 								<li><button id="exportForWebButton" onclick="downloadExportForWeb()" disabled>Télécharger Fichier d'export</button></li></br>
-
-								<li><button disabled style="display: none">Générer HTML Carte (A faire)</button></li></br>
 							</ul>
 							<a href="#" class="close">Close</a>
 						</div>
@@ -119,7 +120,7 @@
 					document.getElementById('inputSavedPinPointsPolygons').value = ""
 					document.getElementById('inputPolygonColor').value = ""
 					document.getElementById('inputPolygonTooltip').value = ""
-					document.getElementById('filePolygonsInput').value = ""
+					// document.getElementById('filePolygonsInput').value = ""
 					document.getElementById('fileInput').value = ""
 					changeMapCursorPointer();
 					sortTable('inputFilterAction','tableResearchInventory',0)
