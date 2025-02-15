@@ -125,7 +125,7 @@ function fillLegend() {
 function fillPolygons() {
 	if (document.getElementById('tmpFilePolygonsContent').value !== '') {
 		document.getElementById('optionCreatePolygon').style = '';
-		document.getElementById('filePolygonsButton').disabled = false;
+		// document.getElementById('filePolygonsButton').disabled = false;
 		if (document.getElementById('map_research') !== undefined) {
 			if (document.getElementById('map_research').children !== undefined) {
 				if (document.getElementById('map_research').children[0] !== undefined) {
