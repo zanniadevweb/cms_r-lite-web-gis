@@ -240,8 +240,8 @@ function mapActionsAfterFinishLoadingFile() {
 		document.getElementById('inputCreatedAssociationPinPointToId').value = '0'
 		document.getElementById('fileButton').disabled = false
 		document.getElementById('fileJsonButton').disabled = false
-		document.getElementById('filePolygonsInput').disabled = false
-		document.getElementById('polygonsTemplateButton').disabled = false
+		// document.getElementById('filePolygonsInput').disabled = false
+		// document.getElementById('polygonsTemplateButton').disabled = false
 }
 
 function loadCsvContentIntoPage()
@@ -356,7 +356,8 @@ function readFilePolygons(input) {
 	var fileContentPolygonsLinesAsString = '';
 	let file = input.files[0];
 
-	let reader = new FileReader();
+	let reader = new FileReader();	
+
 
 	reader.readAsText(file, 'UTF-8'); // Ne pas utiliser : 'ISO-8859-1' => Mauvais encodage diacritiques
 
@@ -568,7 +569,8 @@ function importArrayIntoTable(list, tableId) {
 				tableChildCellOneLine = trValues[k].children
 				for (var childCell = 0; childCell < tableChildCellOneLine.length; childCell++) {
 					strChildCellValue = tableChildCellOneLine[childCell].innerHTML;
-					strChildCellJson = `"`+(childCell-1).toString()+`"`+`: "`+strChildCellValue+`"`
+					cleanStrChildCellValue = strChildCellValue.replaceAll("\"", "\'");
+					strChildCellJson = `"`+(childCell-1).toString()+`"`+`: "`+cleanStrChildCellValue+`"`
 					tableOneLine.push(strChildCellJson)
 				}
 				childCell = 0
@@ -602,7 +604,8 @@ function importArrayIntoTable(list, tableId) {
 			trHeadersValues = [];
 			currLine = 0;
 			tableToJsonValues = [];
-			download(JSON.stringify(JSON.parse(data), null, 2), 'result', 'text/json', '.json');
+			formattedJSON = JSON.stringify(JSON.parse(data), null, 2);
+			download(formattedJSON, 'result', 'text/json', '.json');
 		}
 	}
 
