@@ -29,7 +29,7 @@ var fixtureJSONTemplate =
 			"2": "Value 3 Line 2",
 			"3": "51.473379",
 			"4": "-0.129398"
-		},
+		}
 	]
 }
 `;
@@ -274,7 +274,6 @@ function loadCsvContentIntoPage()
 			break;
 		}
 	}
-
 	importArrayIntoTable(csvValues, 'tableResearchInventory');
 	mapActionsAfterFinishLoadingFile();
 }
@@ -283,11 +282,22 @@ function loadJsonContentIntoPage(fileContent)
 {
 	var jsonInput = JSON.parse(fileContent);
 	jsonValues = [];
+	heads = jsonInput.headers;
 	rows = jsonInput.rows;
 	numberRows = rows.length
-	jsonValues.push(jsonInput.headers);
+	headsArr = [];
+	for(const [key, value] of Object.entries(heads)) {
+		headsArr[key] = value
+	}
+	headsArr.unshift('ID');
+	jsonValues.push(headsArr);
 	for(var i = 0; i < numberRows; i++) {
-		jsonValues.push(rows[i]);
+		rowsArr = [];
+		for(const [key, value] of Object.entries(rows[i])) {
+			rowsArr[key] = value
+		}
+		rowsArr.unshift(String(i));
+		jsonValues.push(rowsArr);
 	}
 	importArrayIntoTable(jsonValues, 'tableResearchInventory');
 	mapActionsAfterFinishLoadingFile();
@@ -554,7 +564,6 @@ function importArrayIntoTable(list, tableId) {
 		trHeadersValues.push(trHeadersStr.replace('<th>','').replace('<thead>','').replace('</thead>','').split('</th>'))
 		if (table !== undefined && table.getElementsByTagName("tbody")[0] !== undefined) {
 			trValues = table.getElementsByTagName("tbody")[0].rows;
-			console.log(trValues)
 			for (var k = 0; k < trValues.length; k++) {
 				tableChildCellOneLine = trValues[k].children
 				for (var childCell = 0; childCell < tableChildCellOneLine.length; childCell++) {
@@ -576,7 +585,7 @@ function importArrayIntoTable(list, tableId) {
 					for (var arrIt = 0; arrIt < trHeadersValues[objIt].length; arrIt++) {
 						currHeader = trHeadersValues[objIt][arrIt].replace('<th>','');
 						if (currHeader !== 'ID' && currHeader !== '') {
-							currHeaderJson = `"`+(arrIt).toString()+`"`+`: "`+currHeader+`"`
+							currHeaderJson = `"`+(arrIt-1).toString()+`"`+`: "`+currHeader+`"`
 							cleanHeaders.push(currHeaderJson)
 						}
 					}
@@ -593,7 +602,7 @@ function importArrayIntoTable(list, tableId) {
 			trHeadersValues = [];
 			currLine = 0;
 			tableToJsonValues = [];
-			download(data, 'result', 'text/json', '.json');
+			download(JSON.stringify(JSON.parse(data), null, 2), 'result', 'text/json', '.json');
 		}
 	}
 
