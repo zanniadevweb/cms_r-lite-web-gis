@@ -8,27 +8,20 @@ Value 1 Line 2;Value 2 Line 2;Value 3 Line 2;51.473379;-0.129398
 
 var fixtureJSONTemplate =
 `{
-	"headers": {
-		"0": "Header 1",
-		"1": "Header 2",
-		"2": "Header 3",
-		"3": "Latitude",
-		"4": "Longitude"
-	},
-	"rows": [
+	"rowsWithHeaders": [
 		{
-			"0": "Value 1 Line 1",
-			"1": "Value 2 Line 1",
-			"2": "Value 3 Line 1",
-			"3": "48.79394",
-			"4": "2.3848870"
+			"Header 1": "Value 1 Line 1",
+			"Header 2": "Value 2 Line 1",
+			"Header 3": "Value 3 Line 1",
+			"Latitude": "48.79394",
+			"Longitude": "2.3848870"
 		},
 		{
-			"0": "Value 1 Line 2",
-			"1": "Value 2 Line 2",
-			"2": "Value 3 Line 2",
-			"3": "51.473379",
-			"4": "-0.129398"
+			"Header 1": "Value 1 Line 2",
+			"Header 2": "Value 2 Line 2",
+			"Header 3": "Value 3 Line 2",
+			"Latitude": "51.473379",
+			"Longitude": "-0.129398"
 		}
 	]
 }
@@ -282,23 +275,22 @@ function loadJsonContentIntoPage(fileContent)
 {
 	var jsonInput = JSON.parse(fileContent);
 	jsonValues = [];
-	heads = jsonInput.headers;
-	rows = jsonInput.rows;
+	rows = jsonInput.rowsWithHeaders;
+	headers = [];
 	numberRows = rows.length
-	headsArr = [];
-	for(const [key, value] of Object.entries(heads)) {
-		headsArr[key] = value
-	}
-	headsArr.unshift('ID');
-	jsonValues.push(headsArr);
 	for(var i = 0; i < numberRows; i++) {
 		rowsArr = [];
 		for(const [key, value] of Object.entries(rows[i])) {
-			rowsArr[key] = value
+			if (i === numberRows - 1) {
+				headers.push(key)
+			}
+			rowsArr.push(value);
 		}
 		rowsArr.unshift(String(i));
 		jsonValues.push(rowsArr);
 	}
+	headers.unshift("ID");
+	jsonValues.unshift(headers);
 	importArrayIntoTable(jsonValues, 'tableResearchInventory');
 	mapActionsAfterFinishLoadingFile();
 }
@@ -564,42 +556,47 @@ function importArrayIntoTable(list, tableId) {
 		trHeadersStr = document.getElementById("tableResearchInventory").getElementsByTagName("thead")[0].outerHTML;
 		trHeadersValues.push(trHeadersStr.replace('<th>','').replace('<thead>','').replace('</thead>','').split('</th>'))
 		if (table !== undefined && table.getElementsByTagName("tbody")[0] !== undefined) {
-			trValues = table.getElementsByTagName("tbody")[0].rows;
-			for (var k = 0; k < trValues.length; k++) {
-				tableChildCellOneLine = trValues[k].children
-				for (var childCell = 0; childCell < tableChildCellOneLine.length; childCell++) {
-					strChildCellValue = tableChildCellOneLine[childCell].innerHTML;
-					cleanStrChildCellValue = strChildCellValue.replaceAll("\"", "\'");
-					strChildCellJson = `"`+(childCell-1).toString()+`"`+`: "`+cleanStrChildCellValue+`"`
-					tableOneLine.push(strChildCellJson)
-				}
-				childCell = 0
-				tableOneLine.shift();
-				tableToJsonValues.push(tableOneLine);
-				tableOneLine = [];
-			}
-			var data =  '';
 			var currHeader = '';
-			var currLine = 0;
 			var cleanHeaders = []
 			for (var objIt = 0; objIt < trHeadersValues.length; objIt++) {
 				if (trHeadersValues[objIt] !== undefined) {
 					for (var arrIt = 0; arrIt < trHeadersValues[objIt].length; arrIt++) {
 						currHeader = trHeadersValues[objIt][arrIt].replace('<th>','');
 						if (currHeader !== 'ID' && currHeader !== '') {
-							currHeaderJson = `"`+(arrIt-1).toString()+`"`+`: "`+currHeader+`"`
-							cleanHeaders.push(currHeaderJson)
+							// currHeaderJson = `"`+(arrIt-1).toString()+`"`+`: "`+currHeader+`"`
+							// cleanHeaders.push(currHeaderJson)
+							cleanHeaders.push(currHeader)
 						}
 					}
 				}
 			}
+			// singleHeaderValues = `"headers": {`+cleanHeaders.join(', ')+`}`;
+
+			trValues = table.getElementsByTagName("tbody")[0].rows;
+			for (var k = 0; k < trValues.length; k++) {
+				tableChildCellOneLine = trValues[k].children
+				for (var childCell = 1; childCell < tableChildCellOneLine.length; childCell++) {
+					cleanStrChildCellValue = ""
+					strChildCellValue = tableChildCellOneLine[childCell].innerHTML;
+					cleanStrChildCellValue = strChildCellValue.replaceAll("\"", "\'");
+					// strChildCellJson = `"`+(childCell-1).toString()+`"`+`: "`+cleanStrChildCellValue+`"`
+					strChildCellJson = `"`+cleanHeaders[childCell-1]+`"`+`: "`+cleanStrChildCellValue+`"`
+					tableOneLine.push(strChildCellJson)
+				}
+				childCell = 0
+				// tableOneLine.shift();
+				tableToJsonValues.push(tableOneLine);
+				tableOneLine = [];
+			}
+
+			var data =  '';
+			var currLine = 0;
 			tableToJsonValuesStrTmp = [];
 			for (var jsonIt = 0; jsonIt < tableToJsonValues.length; jsonIt++) {
 				tableToJsonValuesStrTmp.push(`{`+tableToJsonValues[jsonIt]+`}`)
 			}
-			tableToJsonValuesStr = `"rows": [`+tableToJsonValuesStrTmp.toString()+`]`;
-			singleHeaderValues = `"headers": {`+cleanHeaders.join(', ')+`}`;
-			data = `{`+singleHeaderValues.concat(','+tableToJsonValuesStr)+`}`
+			tableToJsonValuesStr = `"rowsWithHeaders": [`+tableToJsonValuesStrTmp.toString()+`]`;
+			data = `{`+singleHeaderValues.concat(tableToJsonValuesStr)+`}`
 			singleHeaderValues = [];
 			trHeadersValues = [];
 			currLine = 0;
