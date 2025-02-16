@@ -403,6 +403,7 @@ function readFile(input) {
 		document.getElementById('tmpFileContent').value = fileContentLinesAsString;
 		loadCsvContentIntoPage();
 		allowsExportForWeb();
+		document.getElementById('optionCreatePolygon').style = '';
 	};
 
 	reader.onerror = function() {
@@ -418,7 +419,7 @@ function readFileJson(input) {
 	reader.onload = function() {
 		fileContent = reader.result
 		polygonsJson = JSON.parse(fileContent).polygons;
-		readJsonPolygons(polygonsJson) // TODO
+		readJsonPolygons(polygonsJson)
 		loadJsonContentIntoPage(fileContent);
 		allowsExportForWeb();
 	};
@@ -430,7 +431,6 @@ function readFileJson(input) {
 function readJsonPolygons(input) {
 	var filePolygonsContent = [];
 	var fileContentPolygonsLinesAsString = '';
-	// let file = input.files[0];
 	for(const [key, value] of Object.entries(input)) {
 		filePolygonsContent.push("("+value.coordinates+").color('"+value.color+"').tooltip(\""+value.tooltip+"\")")
 	}
@@ -700,17 +700,24 @@ function importArrayIntoTable(list, tableId) {
 			trHeadersValues = [];
 			currLine = 0;
 			tableToJsonValues = [];
-			var polygonContentToFile = document.getElementById('tmpFilePolygonsContent').value.split('|');
-			polyArr = [];
-			for(var polyIt = 0;  polyIt < polygonContentToFile.length; polyIt++) {
-				let polyObj = {};
-				let coordinates = (polygonContentToFile[polyIt].split(".color("))[0].replace("(","").replace(")","")
-				let tooltip = ((polygonContentToFile[polyIt].split(".tooltip("))[1]).replace("\")","").replace("\"", "")
-				let color = ((polygonContentToFile[polyIt].split(".color(")[1]).split(".tooltip(")[0]).replace(")","").replaceAll("'", "")
-				polyObj.coordinates = coordinates
-				polyObj.tooltip = tooltip
-				polyObj.color = color
-				polyArr.push(polyObj)
+			if (document.getElementById('tmpFilePolygonsContent').value !== "") {
+				var polygonContentToFile = [];
+				polygonContentToFile = document.getElementById('tmpFilePolygonsContent').value.split('|');
+				polyArr = [];
+				for(var polyIt = 0;  polyIt < polygonContentToFile.length; polyIt++) {
+					if (polygonContentToFile[polyIt] !== "") {
+						let polyObj = {};
+						let coordinates = (polygonContentToFile[polyIt].split(".color("))[0].replace("(","").replace(")","")
+						let tooltip = ((polygonContentToFile[polyIt].split(".tooltip("))[1]).replace("\")","").replace("\"", "")
+						let color = ((polygonContentToFile[polyIt].split(".color(")[1]).split(".tooltip(")[0]).replace(")","").replaceAll("'", "")
+						polyObj.coordinates = coordinates
+						polyObj.tooltip = tooltip
+						polyObj.color = color
+						polyArr.push(polyObj)
+					}
+				}
+			} else {
+				polyArr = [];
 			}
 			jsonData = JSON.parse(data);
 			jsonData.polygons = polyArr;
