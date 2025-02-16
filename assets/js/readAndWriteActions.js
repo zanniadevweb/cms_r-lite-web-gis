@@ -432,8 +432,6 @@ function readJsonPolygons(input) {
 	var fileContentPolygonsLinesAsString = '';
 	// let file = input.files[0];
 	for(const [key, value] of Object.entries(input)) {
-		// console.log(key);
-		// console.log(value);
 		filePolygonsContent.push("("+value.coordinates+").color('"+value.color+"').tooltip(\""+value.tooltip+"\")")
 	}
 
@@ -702,7 +700,21 @@ function importArrayIntoTable(list, tableId) {
 			trHeadersValues = [];
 			currLine = 0;
 			tableToJsonValues = [];
-			formattedJSON = JSON.stringify(JSON.parse(data), null, 2);
+			var polygonContentToFile = document.getElementById('tmpFilePolygonsContent').value.split('|');
+			polyArr = [];
+			for(var polyIt = 0;  polyIt < polygonContentToFile.length; polyIt++) {
+				let polyObj = {};
+				let coordinates = (polygonContentToFile[polyIt].split(".color("))[0].replace("(","").replace(")","")
+				let tooltip = ((polygonContentToFile[polyIt].split(".tooltip("))[1]).replace("\")","").replace("\"", "")
+				let color = ((polygonContentToFile[polyIt].split(".color(")[1]).split(".tooltip(")[0]).replace(")","").replaceAll("'", "")
+				polyObj.coordinates = coordinates
+				polyObj.tooltip = tooltip
+				polyObj.color = color
+				polyArr.push(polyObj)
+			}
+			jsonData = JSON.parse(data);
+			jsonData.polygons = polyArr;
+			formattedJSON = JSON.stringify(jsonData, null, 2);
 			download(formattedJSON, 'result', 'text/json', '.json');
 		}
 	}
