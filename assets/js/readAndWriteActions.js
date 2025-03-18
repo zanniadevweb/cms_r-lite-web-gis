@@ -135,6 +135,7 @@ var fixtureExportHtml = `
 			new L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> <a href="https://github.com/zanniadevweb/cms_r-lite-web-gis">- Customized by Alexandre Zanni</a>'
 			}).addTo(map);
+			L.control.scale().addTo(map);
 
 			new L.marker([51.5, -0.09]).addTo(map)
 			.bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
@@ -848,6 +849,7 @@ function htmlContentForExport() {
 		maxZoom: 19,
 		noWrap: true
 		}).addTo(map);
+		L.control.scale().addTo(map);
 
 		for (var iPoints = 0; iPoints < iPointsArray.length; iPoints++) {
 			createPoint(iPointsArray[iPoints][0],iPointsArray[iPoints][1],iPointsArray[iPoints][2]);

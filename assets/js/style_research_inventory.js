@@ -9,7 +9,7 @@
         maxZoom: 19,
         noWrap: true
     }).addTo(map)
-
+	L.control.scale().addTo(map);
 		var labelPlanes = [];
 		var label = '';
 		var latitude = '';
