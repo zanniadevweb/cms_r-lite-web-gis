@@ -176,7 +176,7 @@ function fillPolygonsLoop(polygonLinesFromFile) {
 function createPolygon(polyPointsValues, polyPointsColor, polyPointsTooltip) {
 	let lower_case_snake_case_polygon_tooltip = polyPointsTooltip.toLowerCase().replaceAll(' ','_').replaceAll('(','').replaceAll(')','')
 	polygons[lower_case_snake_case_polygon_tooltip] =
-	new L.polygon(polyPointsValues).setStyle({fillColor: polyPointsColor, color: polyPointsColor, className: lower_case_snake_case_polygon_tooltip}).addTo(map).bindTooltip(polyPointsTooltip, {permanent: true, direction:"center"});
+	new L.polygon(polyPointsValues).setStyle({fillColor: polyPointsColor, color: polyPointsColor, className: lower_case_snake_case_polygon_tooltip}).addTo(map).bindTooltip(polyPointsTooltip, {permanent: false, direction:"center"});
 	polygons[lower_case_snake_case_polygon_tooltip]._path.setAttribute('id',lower_case_snake_case_polygon_tooltip) 
 	polygons[lower_case_snake_case_polygon_tooltip].addEventListener("click", highlightClickedPolygon, false);
 	polygons[lower_case_snake_case_polygon_tooltip].polygonId = lower_case_snake_case_polygon_tooltip;
@@ -184,7 +184,23 @@ function createPolygon(polyPointsValues, polyPointsColor, polyPointsTooltip) {
 }
 
 function createPoint(latitude, longitude, label, markerId) {
-	markers[markerId] = new L.marker([latitude,longitude]).bindPopup(label + '</br>').addTo(map);
+	if (isUsingCustomIcon === true) {
+		var customMarkerIcon = L.icon({
+			iconUrl: 'assets/css/images/custom-marker-icon.png',
+			// shadowUrl: 'leaf-shadow.png',
+		
+			iconSize:     [12, 12], // size of the icon
+			// shadowSize:   [50, 64], // size of the shadow
+			// iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+			// shadowAnchor: [4, 62],  // the same for the shadow
+			// popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+		});
+	    var paramCustomMarkerIcon = {icon: customMarkerIcon};
+	} else {
+		var customMarkerIcon = ""
+	}
+
+	markers[markerId] = new L.marker([latitude,longitude], paramCustomMarkerIcon).bindPopup(label + '</br>').addTo(map);
 }
 
 function hidePoint(markerId) {
@@ -369,6 +385,7 @@ function tileMapLayer(src) {
         maxZoom: 19,
         noWrap: true
     }).addTo(map)
+	
 	map.addLayer(newTileLayer)
 }
 
