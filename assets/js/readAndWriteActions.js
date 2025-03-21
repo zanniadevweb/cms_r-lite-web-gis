@@ -144,7 +144,7 @@ var fixtureExportHtml = `
 			new L.polygon([[51.505, -0.09],[52.505, -0.19]])
 			.setStyle({fillColor: '#A020F0', color: '#A020F0'})
 			.addTo(map)
-			.bindTooltip("My Polygon", {permanent: true, direction:"center"});
+			.bindTooltip("My Polygon", {permanent: false, direction:"center"});
 		</script>
 `;
 
@@ -896,7 +896,7 @@ function htmlContentForExport() {
 		}
 
 		function createPolygon(polyPointsValues, polyPointsColor, polyPointsTooltip) {
-			new L.polygon(polyPointsValues).setStyle({fillColor: polyPointsColor, color: polyPointsColor}).addTo(map).bindTooltip(polyPointsTooltip, {permanent: true, direction:"center"});
+			new L.polygon(polyPointsValues).setStyle({fillColor: polyPointsColor, color: polyPointsColor}).addTo(map).bindTooltip(polyPointsTooltip, {permanent: false, direction:"center"});
 		}
 
 		function createPoint(latitude, longitude, label) {
