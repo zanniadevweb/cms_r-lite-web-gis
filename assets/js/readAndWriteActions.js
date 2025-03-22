@@ -1,3 +1,4 @@
+markersJsonGlobal = null;
 var csvSeparatorChar = ';';
 
 var fixtureCSVTemplate =
@@ -419,6 +420,10 @@ function readFileJson(input) {
 	reader.readAsText(file, 'UTF-8');
 	reader.onload = function() {
 		fileContent = reader.result
+		markersJson = JSON.parse(fileContent).markers;
+		if (markersJson !== undefined && markersJson.length > 0) {
+			readJsonMarkers(markersJson)
+		}
 		polygonsJson = JSON.parse(fileContent).polygons;
 		readJsonPolygons(polygonsJson)
 		loadJsonContentIntoPage(fileContent);
@@ -427,6 +432,10 @@ function readFileJson(input) {
 	reader.onerror = function() {
 		console.log(reader.error);
 	};
+}
+
+function readJsonMarkers(input) {
+	markersJsonGlobal = input;
 }
 
 function readJsonPolygons(input) {
@@ -839,6 +848,10 @@ function htmlContentForExport() {
 	var tmpHtmlForExport = fixtureExportHtmlTemplate +
 	'<script>' +
 	`
+		markersJsonGlobal = `+JSON.stringify(markersJsonGlobal)+`;
+
+		markers = [];
+
 		var map = L.map('map').setView([`+currentLat+`,`+currentLng+`], `+currentZoom+`);
 
 		var iPointsArray = [`+stringifiedGlobalPointsArray+`];
@@ -852,7 +865,7 @@ function htmlContentForExport() {
 		L.control.scale().addTo(map);
 
 		for (var iPoints = 0; iPoints < iPointsArray.length; iPoints++) {
-			createPoint(iPointsArray[iPoints][0],iPointsArray[iPoints][1],iPointsArray[iPoints][2]);
+			createPoint(iPointsArray[iPoints][0],iPointsArray[iPoints][1],iPointsArray[iPoints][2], iPoints);
 		}
 
 		fillPolygons(`+JSON.stringify(polygonLinesForHtmlExport)+`);
@@ -899,8 +912,21 @@ function htmlContentForExport() {
 			new L.polygon(polyPointsValues).setStyle({fillColor: polyPointsColor, color: polyPointsColor}).addTo(map).bindTooltip(polyPointsTooltip, {permanent: false, direction:"center"});
 		}
 
-		function createPoint(latitude, longitude, label) {
-			new L.marker([latitude,longitude]).bindPopup(label + '</br>').addTo(map);
+		function createPoint(latitude, longitude, label, markerId) {
+			if (markersJsonGlobal !== null && markersJsonGlobal[markerId] !== undefined) {
+				var paramCustomMarkerIcon = {  
+					fillColor: markersJsonGlobal[markerId].fillColor,
+					fillOpacity: markersJsonGlobal[markerId].fillOpacity,
+					color: markersJsonGlobal[markerId].borderColor,
+					weight: markersJsonGlobal[markerId].borderWeight,
+					radius: markersJsonGlobal[markerId].circleRadius,
+					stroke: markersJsonGlobal[markerId].hasBorder,
+				}
+				markers[markerId] = new L.circle([latitude,longitude], paramCustomMarkerIcon).bindPopup(label + '</br>').addTo(map);
+			} else {
+				var customMarkerIcon = ""
+				markers[markerId] = new L.marker([latitude,longitude], paramCustomMarkerIcon).bindPopup(label + '</br>').addTo(map);
+			}
 		}
 	` +
 	'</script>';

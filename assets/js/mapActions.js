@@ -196,11 +196,21 @@ function createPoint(latitude, longitude, label, markerId) {
 			// popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
 		});
 	    var paramCustomMarkerIcon = {icon: customMarkerIcon};
+		markers[markerId] = new L.marker([latitude,longitude], paramCustomMarkerIcon).bindPopup(label + '</br>').addTo(map);
+	} else if (markersJsonGlobal !== null && markersJsonGlobal[markerId] !== undefined) {
+		var paramCustomMarkerIcon = {  
+			fillColor: markersJsonGlobal[markerId].fillColor, // '#3CC1F1'
+			fillOpacity: markersJsonGlobal[markerId].fillOpacity, // 1.0
+			color: markersJsonGlobal[markerId].borderColor, // black
+			weight: markersJsonGlobal[markerId].borderWeight,  // 0.2
+			radius: markersJsonGlobal[markerId].circleRadius, // 2000
+			stroke: markersJsonGlobal[markerId].hasBorder     // true,
+		}
+		markers[markerId] = new L.circle([latitude,longitude], paramCustomMarkerIcon).bindPopup(label + '</br>').addTo(map);
 	} else {
 		var customMarkerIcon = ""
+		markers[markerId] = new L.marker([latitude,longitude], paramCustomMarkerIcon).bindPopup(label + '</br>').addTo(map);
 	}
-
-	markers[markerId] = new L.marker([latitude,longitude], paramCustomMarkerIcon).bindPopup(label + '</br>').addTo(map);
 }
 
 function hidePoint(markerId) {
