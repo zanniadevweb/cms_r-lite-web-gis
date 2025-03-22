@@ -420,12 +420,12 @@ function readFileJson(input) {
 	reader.readAsText(file, 'UTF-8');
 	reader.onload = function() {
 		fileContent = reader.result
+		polygonsJson = JSON.parse(fileContent).polygons;
+		readJsonPolygons(polygonsJson)
 		markersJson = JSON.parse(fileContent).markers;
 		if (markersJson !== undefined && markersJson.length > 0) {
 			readJsonMarkers(markersJson)
 		}
-		polygonsJson = JSON.parse(fileContent).polygons;
-		readJsonPolygons(polygonsJson)
 		loadJsonContentIntoPage(fileContent);
 		allowsExportForWeb();
 	};
@@ -864,11 +864,11 @@ function htmlContentForExport() {
 		}).addTo(map);
 		L.control.scale().addTo(map);
 
+		fillPolygons(`+JSON.stringify(polygonLinesForHtmlExport)+`);
+
 		for (var iPoints = 0; iPoints < iPointsArray.length; iPoints++) {
 			createPoint(iPointsArray[iPoints][0],iPointsArray[iPoints][1],iPointsArray[iPoints][2], iPoints);
 		}
-
-		fillPolygons(`+JSON.stringify(polygonLinesForHtmlExport)+`);
 
 		function fillPolygons(polygonLinesForHtmlExport) {
 			if (polygonLinesForHtmlExport !== '') {
