@@ -440,16 +440,18 @@ function readJsonMarkers(input) {
 }
 
 function readJsonPolygons(input) {
-	var filePolygonsContent = [];
-	var fileContentPolygonsLinesAsString = '';
-	for(const [key, value] of Object.entries(input)) {
-		filePolygonsContent.push("("+value.coordinates+").color('"+value.color+"').tooltip(\""+value.tooltip+"\")")
-	}
-
-	fileContentPolygonsLinesAsString = filePolygonsContent.join('|');
-	document.getElementById('tmpFilePolygonsContent').value = fileContentPolygonsLinesAsString;
-	if (document.getElementById('tmpFilePolygonsContent').value !== '') {
-		fillPolygons();
+	if (input !== undefined ) {
+		var filePolygonsContent = [];
+		var fileContentPolygonsLinesAsString = '';
+		for(const [key, value] of Object.entries(input)) {
+			filePolygonsContent.push("("+value.coordinates+").color('"+value.color+"').tooltip(\""+value.tooltip+"\")")
+		}
+	
+		fileContentPolygonsLinesAsString = filePolygonsContent.join('|');
+		document.getElementById('tmpFilePolygonsContent').value = fileContentPolygonsLinesAsString;
+		if (document.getElementById('tmpFilePolygonsContent').value !== '') {
+			fillPolygons();
+		}
 	}
 }
 
