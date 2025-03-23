@@ -169,30 +169,42 @@
 		function selectPointId() {
 			var pointId = document.getElementById('inputCreatedAssociationPinPointToId').value;
 			if (markersJsonGlobal[pointId] !== undefined) {
-				document.getElementById('inputPointStyleRadius').value = markersJsonGlobal[pointId].circleRadius;
-				document.getElementById('inputPointStyleFillColor').value = markersJsonGlobal[pointId].fillColor;
-				document.getElementById('inputPointStyleOpacity').value = markersJsonGlobal[pointId].fillOpacity;
-				document.getElementById('inputPointStyleBorderColor').value = markersJsonGlobal[pointId].borderColor;
-				document.getElementById('inputPointStyleBorderWeight').value = markersJsonGlobal[pointId].borderWeight;
-				document.getElementById('inputPointStyleHasBorder').value = markersJsonGlobal[pointId].hasBorder;
+				if (isUsingCustomIcon === true) {
+					document.getElementById('inputPointStyleCustomMarkerIcon').value = markersJsonGlobal[pointId].customMarkerIcon;
+				} else {
+					document.getElementById('inputPointStyleRadius').value = markersJsonGlobal[pointId].circleRadius;
+					document.getElementById('inputPointStyleFillColor').value = markersJsonGlobal[pointId].fillColor;
+					document.getElementById('inputPointStyleOpacity').value = markersJsonGlobal[pointId].fillOpacity;
+					document.getElementById('inputPointStyleBorderColor').value = markersJsonGlobal[pointId].borderColor;
+					document.getElementById('inputPointStyleBorderWeight').value = markersJsonGlobal[pointId].borderWeight;
+					document.getElementById('inputPointStyleHasBorder').value = markersJsonGlobal[pointId].hasBorder;
+				}
 			} else {
-				document.getElementById('inputPointStyleRadius').value = ''
-				document.getElementById('inputPointStyleFillColor').value = ''
-				document.getElementById('inputPointStyleOpacity').value = ''
-				document.getElementById('inputPointStyleBorderColor').value = ''
-				document.getElementById('inputPointStyleBorderWeight').value = ''
-				document.getElementById('inputPointStyleHasBorder').value = ''
+				if (isUsingCustomIcon === true) {
+					document.getElementById('inputPointStyleCustomMarkerIcon').value = ''
+				} else {
+					document.getElementById('inputPointStyleRadius').value = ''
+					document.getElementById('inputPointStyleFillColor').value = ''
+					document.getElementById('inputPointStyleOpacity').value = ''
+					document.getElementById('inputPointStyleBorderColor').value = ''
+					document.getElementById('inputPointStyleBorderWeight').value = ''
+					document.getElementById('inputPointStyleHasBorder').value = ''
+				}
 			}
 		}
 
 		function saveCurrStyle() {
 			var pointId = document.getElementById('inputCreatedAssociationPinPointToId').value;
-			markersJsonGlobal[pointId].circleRadius = parseFloat(document.getElementById('inputPointStyleRadius').value);
-			markersJsonGlobal[pointId].fillColor = document.getElementById('inputPointStyleFillColor').value;
-			markersJsonGlobal[pointId].fillOpacity = parseFloat(document.getElementById('inputPointStyleOpacity').value);
-			markersJsonGlobal[pointId].borderColor = document.getElementById('inputPointStyleBorderColor').value;
-			markersJsonGlobal[pointId].borderWeight = parseFloat(document.getElementById('inputPointStyleBorderWeight').value);
-			markersJsonGlobal[pointId].hasBorder = document.getElementById('inputPointStyleHasBorder').value === "true" ? true : false;
+			if (isUsingCustomIcon === true) {
+				markersJsonGlobal[pointId].customMarkerIcon = document.getElementById('inputPointStyleCustomMarkerIcon').value;
+			} else {
+				markersJsonGlobal[pointId].circleRadius = parseFloat(document.getElementById('inputPointStyleRadius').value);
+				markersJsonGlobal[pointId].fillColor = document.getElementById('inputPointStyleFillColor').value;
+				markersJsonGlobal[pointId].fillOpacity = parseFloat(document.getElementById('inputPointStyleOpacity').value);
+				markersJsonGlobal[pointId].borderColor = document.getElementById('inputPointStyleBorderColor').value;
+				markersJsonGlobal[pointId].borderWeight = parseFloat(document.getElementById('inputPointStyleBorderWeight').value);
+				markersJsonGlobal[pointId].hasBorder = document.getElementById('inputPointStyleHasBorder').value === "true" ? true : false;
+			}
 			synchronizeMap();
 		}
 

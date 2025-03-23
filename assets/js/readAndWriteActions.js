@@ -921,7 +921,7 @@ function htmlContentForExport() {
 		}
 
 		function createPoint(latitude, longitude, label, markerId) {
-			if (markersJsonGlobal !== null && markersJsonGlobal[markerId] !== undefined) {
+			if (markersJsonGlobal !== null && markersJsonGlobal[markerId] !== undefined && markersJsonGlobal[markerId].customMarkerIcon === undefined) {
 				var paramCustomMarkerIcon = {  
 					fillColor: markersJsonGlobal[markerId].fillColor,
 					fillOpacity: markersJsonGlobal[markerId].fillOpacity,
@@ -931,7 +931,7 @@ function htmlContentForExport() {
 					stroke: markersJsonGlobal[markerId].hasBorder,
 				}
 				markers[markerId] = new L.circle([latitude,longitude], paramCustomMarkerIcon).bindPopup(label + '</br>').addTo(map);
-			} else if (isUsingDefaultMarkers) {
+			} else {
 				var customMarkerIcon = ""
 				markers[markerId] = new L.marker([latitude,longitude], paramCustomMarkerIcon).bindPopup(label + '</br>').addTo(map);
 			}
