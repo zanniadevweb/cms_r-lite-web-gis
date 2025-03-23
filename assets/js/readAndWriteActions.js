@@ -406,7 +406,9 @@ function readFile(input) {
 		loadCsvContentIntoPage();
 		allowsExportForWeb();
 		document.getElementById('optionCreatePolygon').style = '';
-		document.getElementById('optionStylePoint').style = '';
+		if (markersJsonGlobal !== null) {
+			document.getElementById('optionStylePoint').style = '';
+		}
 	};
 
 	reader.onerror = function() {
@@ -430,7 +432,9 @@ function readFileJson(input) {
 		loadJsonContentIntoPage(fileContent);
 		allowsExportForWeb();
 		document.getElementById('optionCreatePolygon').style = '';
-		document.getElementById('optionStylePoint').style = '';
+		if (markersJsonGlobal !== null) {
+			document.getElementById('optionStylePoint').style = '';
+		}
 	};
 	reader.onerror = function() {
 		console.log(reader.error);
@@ -921,7 +925,7 @@ function htmlContentForExport() {
 		}
 
 		function createPoint(latitude, longitude, label, markerId) {
-			if (markersJsonGlobal !== null && markersJsonGlobal[markerId] !== undefined && markersJsonGlobal[markerId].customMarkerIcon === undefined) {
+			if (markersJsonGlobal !== null && markersJsonGlobal[markerId] !== undefined && !(markersJsonGlobal[markerId].customMarkerIcon)) {
 				var paramCustomMarkerIcon = {  
 					fillColor: markersJsonGlobal[markerId].fillColor,
 					fillOpacity: markersJsonGlobal[markerId].fillOpacity,

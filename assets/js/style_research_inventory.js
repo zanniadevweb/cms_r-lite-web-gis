@@ -168,19 +168,19 @@
 
 		function selectPointId() {
 			var pointId = document.getElementById('inputCreatedAssociationPinPointToId').value;
-			if (markersJsonGlobal[pointId] !== undefined) {
-				if (isUsingCustomIcon === true) {
-					document.getElementById('inputPointStyleCustomMarkerIcon').value = markersJsonGlobal[pointId].customMarkerIcon;
+			if (markersJsonGlobal !== null && markersJsonGlobal[pointId] !== undefined) {
+				if (isUsingCustomIcon === true && markersJsonGlobal[0].customMarkerIcon) {
+					document.getElementById('inputPointStyleCustomMarkerIcon').value = markersJsonGlobal[pointId].customMarkerIcon ? markersJsonGlobal[pointId].customMarkerIcon : '';
 				} else {
-					document.getElementById('inputPointStyleRadius').value = markersJsonGlobal[pointId].circleRadius;
-					document.getElementById('inputPointStyleFillColor').value = markersJsonGlobal[pointId].fillColor;
-					document.getElementById('inputPointStyleOpacity').value = markersJsonGlobal[pointId].fillOpacity;
-					document.getElementById('inputPointStyleBorderColor').value = markersJsonGlobal[pointId].borderColor;
-					document.getElementById('inputPointStyleBorderWeight').value = markersJsonGlobal[pointId].borderWeight;
-					document.getElementById('inputPointStyleHasBorder').value = markersJsonGlobal[pointId].hasBorder;
+					document.getElementById('inputPointStyleRadius').value = markersJsonGlobal[pointId].circleRadius ? markersJsonGlobal[pointId].circleRadius : '';
+					document.getElementById('inputPointStyleFillColor').value = markersJsonGlobal[pointId].fillColor ? markersJsonGlobal[pointId].fillColor : '';
+					document.getElementById('inputPointStyleOpacity').value = markersJsonGlobal[pointId].fillOpacity ? markersJsonGlobal[pointId].fillOpacity : '';
+					document.getElementById('inputPointStyleBorderColor').value = markersJsonGlobal[pointId].borderColor ? markersJsonGlobal[pointId].borderColor : '';
+					document.getElementById('inputPointStyleBorderWeight').value = markersJsonGlobal[pointId].borderWeight ? markersJsonGlobal[pointId].borderWeight : '';
+					document.getElementById('inputPointStyleHasBorder').value = markersJsonGlobal[pointId].hasBorder ? markersJsonGlobal[pointId].hasBorder : '';
 				}
 			} else {
-				if (isUsingCustomIcon === true) {
+				if (isUsingCustomIcon === true && markersJsonGlobal[0].customMarkerIcon) {
 					document.getElementById('inputPointStyleCustomMarkerIcon').value = ''
 				} else {
 					document.getElementById('inputPointStyleRadius').value = ''
@@ -195,7 +195,7 @@
 
 		function saveCurrStyle() {
 			var pointId = document.getElementById('inputCreatedAssociationPinPointToId').value;
-			if (isUsingCustomIcon === true) {
+			if (isUsingCustomIcon === true && markersJsonGlobal[pointId].customMarkerIcon) {
 				markersJsonGlobal[pointId].customMarkerIcon = document.getElementById('inputPointStyleCustomMarkerIcon').value;
 			} else {
 				markersJsonGlobal[pointId].circleRadius = parseFloat(document.getElementById('inputPointStyleRadius').value);

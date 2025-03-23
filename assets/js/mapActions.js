@@ -184,7 +184,7 @@ function createPolygon(polyPointsValues, polyPointsColor, polyPointsTooltip) {
 }
 
 function createPoint(latitude, longitude, label, markerId) {
-	if (isUsingCustomIcon === true && markersJsonGlobal !== null && markersJsonGlobal[markerId] !== undefined && markersJsonGlobal[markerId].customMarkerIcon !== undefined) {
+	if (isUsingCustomIcon === true && markersJsonGlobal !== null && markersJsonGlobal[markerId] !== undefined && markersJsonGlobal[markerId].customMarkerIcon) {
 		var customMarkerIcon = L.icon({
 			iconUrl: markersJsonGlobal[markerId].customMarkerIcon,
 			// shadowUrl: 'leaf-shadow.png',
@@ -197,20 +197,7 @@ function createPoint(latitude, longitude, label, markerId) {
 		});
 	    var paramCustomMarkerIcon = {icon: customMarkerIcon};
 		markers[markerId] = new L.marker([latitude,longitude], paramCustomMarkerIcon).bindPopup(label + '</br>').addTo(map);
-	} else if (isUsingCustomIcon === true) {
-		var customMarkerIcon = L.icon({
-			iconUrl: 'assets/css/images/custom-marker-icon.png',
-			// shadowUrl: 'leaf-shadow.png',
-		
-			iconSize:     [12, 12], // size of the icon
-			// shadowSize:   [50, 64], // size of the shadow
-			// iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-			// shadowAnchor: [4, 62],  // the same for the shadow
-			// popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-		});
-	    var paramCustomMarkerIcon = {icon: customMarkerIcon};
-		markers[markerId] = new L.marker([latitude,longitude], paramCustomMarkerIcon).bindPopup(label + '</br>').addTo(map);
-	} else if (markersJsonGlobal !== null && markersJsonGlobal[markerId] !== undefined && markersJsonGlobal[markerId].fillColor !== undefined) {
+	} else if (markersJsonGlobal !== null && markersJsonGlobal[markerId] !== undefined && markersJsonGlobal[markerId].fillColor) {
 		var paramCustomMarkerIcon = {  
 			fillColor: markersJsonGlobal[markerId].fillColor, // '#3CC1F1'
 			fillOpacity: markersJsonGlobal[markerId].fillOpacity, // 1.0
@@ -462,12 +449,12 @@ function changeMapCursorPointer() {
 			document.getElementById('pinPointDeleteButton').disabled = false;
 		}
 	} else if (selectMapPinPointAction == 5) {
-		if (isUsingCustomIcon === true) {
+		if (isUsingCustomIcon === true && markersJsonGlobal[0].customMarkerIcon) {
 			document.getElementById('inputPointStyleCustomMarkerIconLabel').style = '';
 			document.getElementById('inputPointStyleCustomMarkerIcon').style = '';
 			var pointId = document.getElementById('inputCreatedAssociationPinPointToId').value;
-			if (markersJsonGlobal[pointId] !== undefined) {
-				document.getElementById('inputPointStyleCustomMarkerIcon').value = markersJsonGlobal[pointId].customMarkerIcon;
+			if (markersJsonGlobal !== null && markersJsonGlobal[pointId] !== undefined) {
+				document.getElementById('inputPointStyleCustomMarkerIcon').value = markersJsonGlobal[pointId].customMarkerIcon ? markersJsonGlobal[pointId].customMarkerIcon : '';
 			} else {
 				document.getElementById('inputPointStyleCustomMarkerIcon').value = ''
 			}
@@ -485,13 +472,13 @@ function changeMapCursorPointer() {
 			document.getElementById('inputPointStyleHasBorderLabel').style.display = '';
 			document.getElementById('inputPointStyleHasBorder').style.display = '';
 			var pointId = document.getElementById('inputCreatedAssociationPinPointToId').value;
-			if (markersJsonGlobal[pointId] !== undefined) {
-				document.getElementById('inputPointStyleRadius').value = markersJsonGlobal[pointId].circleRadius;
-				document.getElementById('inputPointStyleFillColor').value = markersJsonGlobal[pointId].fillColor;
-				document.getElementById('inputPointStyleOpacity').value = markersJsonGlobal[pointId].fillOpacity;
-				document.getElementById('inputPointStyleBorderColor').value = markersJsonGlobal[pointId].borderColor;
-				document.getElementById('inputPointStyleBorderWeight').value = markersJsonGlobal[pointId].borderWeight;
-				document.getElementById('inputPointStyleHasBorder').value = markersJsonGlobal[pointId].hasBorder;
+			if (markersJsonGlobal !== null && markersJsonGlobal[pointId] !== undefined) {
+				document.getElementById('inputPointStyleRadius').value = markersJsonGlobal[pointId].circleRadius ? markersJsonGlobal[pointId].circleRadius : '';
+				document.getElementById('inputPointStyleFillColor').value = markersJsonGlobal[pointId].fillColor ? markersJsonGlobal[pointId].fillColor : '';
+				document.getElementById('inputPointStyleOpacity').value = markersJsonGlobal[pointId].fillOpacity ? markersJsonGlobal[pointId].fillOpacity : '';
+				document.getElementById('inputPointStyleBorderColor').value = markersJsonGlobal[pointId].borderColor ? markersJsonGlobal[pointId].borderColor : '';
+				document.getElementById('inputPointStyleBorderWeight').value = markersJsonGlobal[pointId].borderWeight ? markersJsonGlobal[pointId].borderWeight : '';
+				document.getElementById('inputPointStyleHasBorder').value = markersJsonGlobal[pointId].hasBorder ? markersJsonGlobal[pointId].hasBorder : '';
 			} else {
 				document.getElementById('inputPointStyleRadius').value = ''
 				document.getElementById('inputPointStyleFillColor').value = ''
