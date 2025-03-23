@@ -428,6 +428,7 @@ function readFileJson(input) {
 		}
 		loadJsonContentIntoPage(fileContent);
 		allowsExportForWeb();
+		document.getElementById('optionCreatePolygon').style = '';
 	};
 	reader.onerror = function() {
 		console.log(reader.error);
