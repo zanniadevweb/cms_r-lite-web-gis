@@ -67,17 +67,25 @@
 						<option id="optionCreatePolygon" value="2" style="display: none;">Création de polygones</option>
 						<option id="optionDeletePoint" value="3" style="display: none;">Suppression de points</option>
 						<option id="optionDeletePolygon" value="4" style="display: none;">Suppression de polygones</option>
+						<option id="optionStylePoint" value="5" style="display: none;" selected>Visuel des points</option>
 					</select>
 					<button id="pinPointSaveButton" onclick="saveCurrPinPoint()" disabled>Sauvegarder Point Courant</button>
 					<button id="pinPointDeleteButton" onclick="deleteCurrPinPoint()" disabled>Supprimer Point Courant</button>
-					<button id="pinPointsPolygonButton" onclick="saveCurrPinPointsPolygon()" disabled>Sauvegarder Polygone Courant</button></br>
-					<button id="pinPointsDeletePolygon" onclick="deleteCurrPolygon()" disabled>Supprimer Polygone en sélection</button></br>
+					<button id="pinPointsPolygonButton" onclick="saveCurrPinPointsPolygon()" disabled>Sauvegarder Polygone Courant</button>
+					<button id="pinPointsDeletePolygon" onclick="deleteCurrPolygon()" disabled>Supprimer Polygone en sélection</button>
+					<button id="pinSaveStyle" onclick="saveCurrStyle()" disabled>Sauvegarder Visuel</button></br>
 					<div id="inputCreatedPinPointLabel" style="display:none;">Valeur point courant : <input id="inputCreatedPinPoint" type="text" disabled style="display:none;"></div>
-					<div id="inputCreatedAssociationPinPointToIdLabel" style="display: none;">ID associé : <input id="inputCreatedAssociationPinPointToId" val="1" type="number" min="0" step="1" style="display: none;background:#858585;"></div>
+					<div id="inputCreatedAssociationPinPointToIdLabel" style="display: none;">ID associé : <input id="inputCreatedAssociationPinPointToId" val="1" type="number" min="0" step="1" style="display: none;background:#858585;" onchange="selectPointId()"></div>
 					<div id="inputSavedPinPointsLabel" style="display: none">Valeur point sauvegardé : <input id="inputSavedPinPoints" type="text" disabled style="display: none"></div>
 					<div id="inputPolygonColorLabel" style="display: none;">Couleur du polygone ( <a href="https://htmlcolorcodes.com/" target="_blank">#hexcode</a>) : <input id="inputPolygonColor" type="text" val="1" placeholder="0000FF" style="display: none;"></div>
 					<div id="inputPolygonTooltipLabel" style="display: none;">Label du polygone : <input id="inputPolygonTooltip" type="text" val="1" placeholder="Default Polygon Label" style="display: none;"></div>
 					<div id="inputSavedPinPointsPolygonsLabel" style="display: none">Valeurs polygone sauvegardé : <input id="inputSavedPinPointsPolygons" type="text" disabled style="display: none"></div>
+					<div id="inputPointStyleRadiusLabel" style="display: none;">Rayon : <input id="inputPointStyleRadius" type="text" val="1" placeholder="2000" style="display: none;"></div>
+					<div id="inputPointStyleFillColorLabel" style="display: none;">Couleur de remplissage ( <a href="https://htmlcolorcodes.com/" target="_blank">#hexcode</a>) : <input id="inputPointStyleFillColor" type="text" val="1" placeholder="0000FF" style="display: none;"></div>
+					<div id="inputPointStyleOpacityLabel" style="display: none;">Opacité : <input id="inputPointStyleOpacity" type="text" val="1" placeholder="1.0" style="display: none;"></div>
+					<div id="inputPointStyleBorderColorLabel" style="display: none;">Couleur de bordure ( <a href="https://htmlcolorcodes.com/" target="_blank">#hexcode</a>) : <input id="inputPointStyleBorderColor" type="text" val="1" placeholder="black" style="display: none;"></div>
+					<div id="inputPointStyleBorderWeightLabel" style="display: none;">Épaisseur de bordure : <input id="inputPointStyleBorderWeight" type="text" val="1" placeholder="0.3" style="display: none;"></div>
+					<div id="inputPointStyleHasBorderLabel" style="display: none;">Avec bordure : <input id="inputPointStyleHasBorder" type="text" val="1" placeholder="true" style="display: none;"></div>
 					</br>
 					<input id="tmpFileContent" type="text" style="display: none">
 					<input id="tmpFilePolygonsContent" type="text" style="display: none">
