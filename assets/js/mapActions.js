@@ -410,7 +410,7 @@ function changeMapCursorPointer() {
 	} else {
 		document.getElementById('map_research').style.cursor = "";
 	}
-	if (selectMapPinPointAction == 1 || selectMapPinPointAction == 3) {
+	if (selectMapPinPointAction == 1 || selectMapPinPointAction == 3 || selectMapPinPointAction == 5) {
 		document.getElementById('inputCreatedAssociationPinPointToIdLabel').style.display = '';
 		document.getElementById('inputCreatedAssociationPinPointToId').style.display = '';
 	} else {
@@ -421,14 +421,22 @@ function changeMapCursorPointer() {
 		document.getElementById('pinPointDeleteButton').disabled = false
 		document.getElementById('pinPointSaveButton').disabled = true
 		document.getElementById('pinPointsDeletePolygon').disabled = true
+		document.getElementById('pinSaveStyle').disabled = true
 	} else if (selectMapPinPointAction == 4) {
 		document.getElementById('pinPointDeleteButton').disabled = true
 		document.getElementById('pinPointSaveButton').disabled = true
 		document.getElementById('pinPointsDeletePolygon').disabled = false
+		document.getElementById('pinSaveStyle').disabled = true
+	} else if (selectMapPinPointAction == 5) {
+		document.getElementById('pinPointDeleteButton').disabled = true
+		document.getElementById('pinPointSaveButton').disabled = true
+		document.getElementById('pinPointsDeletePolygon').disabled = true
+		document.getElementById('pinSaveStyle').disabled = false
 	} else {
 		document.getElementById('pinPointDeleteButton').disabled = true
 		document.getElementById('pinPointSaveButton').disabled = false
 		document.getElementById('pinPointsDeletePolygon').disabled = true
+		document.getElementById('pinSaveStyle').disabled = true
 	}
 	if (selectMapPinPointAction == 2) {
 		document.getElementById('inputPolygonColor').style.display = '';
@@ -440,6 +448,38 @@ function changeMapCursorPointer() {
         if (document.getElementById('inputSavedPinPoints').value !== "") {
 			document.getElementById('pinPointDeleteButton').disabled = false;
 		}
+	} else if (selectMapPinPointAction == 5) {
+		document.getElementById('inputPointStyleRadiusLabel').style.display = '';
+		document.getElementById('inputPointStyleRadius').style.display = '';
+		document.getElementById('inputPointStyleFillColorLabel').style.display = '';
+		document.getElementById('inputPointStyleFillColor').style.display = '';
+		document.getElementById('inputPointStyleOpacityLabel').style.display = '';
+		document.getElementById('inputPointStyleOpacity').style.display = '';
+		document.getElementById('inputPointStyleBorderColorLabel').style.display = '';
+		document.getElementById('inputPointStyleBorderColor').style.display = '';
+		document.getElementById('inputPointStyleBorderWeightLabel').style.display = '';
+		document.getElementById('inputPointStyleBorderWeight').style.display = '';
+		document.getElementById('inputPointStyleHasBorderLabel').style.display = '';
+		document.getElementById('inputPointStyleHasBorder').style.display = '';
+		var pointId = document.getElementById('inputCreatedAssociationPinPointToId').value;
+		if (markersJsonGlobal[pointId] !== undefined) {
+			document.getElementById('inputPointStyleRadius').value = markersJsonGlobal[pointId].circleRadius;
+			document.getElementById('inputPointStyleFillColor').value = markersJsonGlobal[pointId].fillColor;
+			document.getElementById('inputPointStyleOpacity').value = markersJsonGlobal[pointId].fillOpacity;
+			document.getElementById('inputPointStyleBorderColor').value = markersJsonGlobal[pointId].borderColor;
+			document.getElementById('inputPointStyleBorderWeight').value = markersJsonGlobal[pointId].borderWeight;
+			document.getElementById('inputPointStyleHasBorder').value = markersJsonGlobal[pointId].hasBorder;
+		} else {
+			document.getElementById('inputPointStyleRadius').value = ''
+			document.getElementById('inputPointStyleFillColor').value = ''
+			document.getElementById('inputPointStyleOpacity').value = ''
+			document.getElementById('inputPointStyleBorderColor').value = ''
+			document.getElementById('inputPointStyleBorderWeight').value = ''
+			document.getElementById('inputPointStyleHasBorder').value = ''
+		}
+        if (document.getElementById('inputSavedPinPoints').value !== "") {
+			document.getElementById('pinPointDeleteButton').disabled = false;
+		}
 	} else {
 		document.getElementById('inputPolygonColor').style.display = 'none';
 		document.getElementById('inputPolygonColorLabel').style.display = 'none';
@@ -447,6 +487,19 @@ function changeMapCursorPointer() {
 		document.getElementById('inputPolygonTooltipLabel').style.display = 'none';
 		document.getElementById('inputSavedPinPointsPolygons').style.display = 'none';
 		document.getElementById('inputSavedPinPointsPolygonsLabel').style.display = 'none';
+		document.getElementById('inputPointStyleRadiusLabel').style.display = 'none';
+		document.getElementById('inputPointStyleRadius').style.display = 'none';
+		document.getElementById('inputPointStyleFillColorLabel').style.display = 'none';
+		document.getElementById('inputPointStyleFillColor').style.display = 'none';
+		document.getElementById('inputPointStyleOpacityLabel').style.display = 'none';
+		document.getElementById('inputPointStyleOpacity').style.display = 'none';
+		document.getElementById('inputPointStyleBorderColorLabel').style.display = 'none';
+		document.getElementById('inputPointStyleBorderColor').style.display = 'none';
+		document.getElementById('inputPointStyleBorderWeightLabel').style.display = 'none';
+		document.getElementById('inputPointStyleBorderWeight').style.display = 'none';
+		document.getElementById('inputPointStyleHasBorderLabel').style.display = 'none';
+		document.getElementById('inputPointStyleHasBorder').style.display = 'none';
+		
 	}
 
 	if (selectMapPinPointAction == 1 || selectMapPinPointAction == 2) {

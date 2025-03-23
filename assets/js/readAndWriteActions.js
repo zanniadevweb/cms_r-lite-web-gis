@@ -406,6 +406,7 @@ function readFile(input) {
 		loadCsvContentIntoPage();
 		allowsExportForWeb();
 		document.getElementById('optionCreatePolygon').style = '';
+		document.getElementById('optionStylePoint').style = '';
 	};
 
 	reader.onerror = function() {
@@ -429,6 +430,7 @@ function readFileJson(input) {
 		loadJsonContentIntoPage(fileContent);
 		allowsExportForWeb();
 		document.getElementById('optionCreatePolygon').style = '';
+		document.getElementById('optionStylePoint').style = '';
 	};
 	reader.onerror = function() {
 		console.log(reader.error);
@@ -759,6 +761,7 @@ function isImgUrl(url) {
 			}
 			jsonData = JSON.parse(data);
 			jsonData.polygons = polyArr;
+			jsonData.markers = markersJsonGlobal;
 			formattedJSON = JSON.stringify(jsonData, null, 2);
 			download(formattedJSON, 'result', 'text/json', '.json');
 		}
@@ -853,6 +856,8 @@ function htmlContentForExport() {
 	`
 		markersJsonGlobal = `+JSON.stringify(markersJsonGlobal)+`;
 
+		isUsingDefaultMarkers = markersJsonGlobal !== null ? false : true;
+
 		markers = [];
 
 		var map = L.map('map').setView([`+currentLat+`,`+currentLng+`], `+currentZoom+`);
@@ -926,7 +931,7 @@ function htmlContentForExport() {
 					stroke: markersJsonGlobal[markerId].hasBorder,
 				}
 				markers[markerId] = new L.circle([latitude,longitude], paramCustomMarkerIcon).bindPopup(label + '</br>').addTo(map);
-			} else {
+			} else if (isUsingDefaultMarkers) {
 				var customMarkerIcon = ""
 				markers[markerId] = new L.marker([latitude,longitude], paramCustomMarkerIcon).bindPopup(label + '</br>').addTo(map);
 			}
