@@ -9,6 +9,19 @@
         maxZoom: 19,
         noWrap: true
     }).addTo(map)
+	map.options.scrollWheelZoom = false;
+	document.getElementById('map_research').addEventListener('wheel', function(e) {
+		e.preventDefault();
+		let currentZoom = map.getZoom();
+		if (currentZoom > 10) {
+			zoomStep = 0.5;
+			if (e.deltaY < 0) {
+				map.setZoom(currentZoom + zoomStep);
+			} else {
+				map.setZoom(currentZoom - zoomStep);
+			}
+		}
+	});
 	L.control.scale().addTo(map);
 		var labelPlanes = [];
 		var label = '';
