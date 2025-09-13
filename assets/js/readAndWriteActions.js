@@ -129,7 +129,7 @@ var fixturePolygonsTemplate = `
 var fixtureExportHtml = `
 		<link rel='stylesheet' href='https://unpkg.com/leaflet@1.9.3/dist/leaflet.css' integrity='sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=' crossorigin=''/>
 		<script src='https://unpkg.com/leaflet@1.9.3/dist/leaflet.js' integrity='sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=' crossorigin=''></script>
-		<div id='map' style='width: 100%; height: 100%; font-size: 25px; margin: 0; border-radius: 0px; border: 2px solid #3c546b;'></div>
+		<div id='map' style='width: 100%; height: 95%; font-size: 25px; margin: 0; border-radius: 0px; border: 2px solid #3c546b;'></div>
 		<script>
 			var map = L.map('map').setView([40.421190, 15.005673], 4);
 
@@ -152,7 +152,7 @@ var fixtureExportHtml = `
 var fixtureExportHtmlTemplate = `
 		<link rel='stylesheet' href='https://unpkg.com/leaflet@1.9.3/dist/leaflet.css' integrity='sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=' crossorigin=''/>
 		<script src='https://unpkg.com/leaflet@1.9.3/dist/leaflet.js' integrity='sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=' crossorigin=''></script>
-		<div id='map' style='width: 100%; height: 100%; font-size: 25px; margin: 0; border-radius: 0px; border: 2px solid #3c546b;'></div>
+		<div id='map' style='width: 100%; height: 95%; font-size: 25px; margin: 0; border-radius: 0px; border: 2px solid #3c546b;'></div>
 `;
 
 var fixtureKML = `
@@ -953,25 +953,16 @@ function htmlContentForExport() {
                 alert("Veuillez saisir un terme de recherche");
                 return;
             }
-
-            // Nettoie les marqueurs de la carte
             markers.forEach(marker => map.removeLayer(marker));
-
-            // Filtre les marqueurs dont le popup contient le texte recherché
             const results = markers.filter(marker => {
                 const popupContent = marker.getPopup()?.getContent()?.toLowerCase() || "";
                 return popupContent.includes(query);
             });
-
-            // Affiche uniquement les marqueurs trouvés
             results.forEach(marker => marker.addTo(map));
-
             if (results.length === 0) {
                 document.getElementById('searchResults').textContent = "Aucun résultat trouvé";
                 return;
             }
-
-            // Centre la carte sur les résultats
             map.fitBounds(L.featureGroup(results).getBounds());
             document.getElementById('searchResults').textContent = \`\${results.length} résultat(s) trouvé(s)\`;
         }
@@ -979,8 +970,6 @@ function htmlContentForExport() {
         function resetSearch() {
             document.getElementById('searchInput').value = '';
             document.getElementById('searchResults').textContent = '';
-
-            // Réaffiche tous les marqueurs
             markers.forEach(marker => marker.addTo(map));
         }
 	` +
@@ -1026,3 +1015,4 @@ function kmlContentForExport() {
 	return tmpKmlForExport;
 
 }
+
