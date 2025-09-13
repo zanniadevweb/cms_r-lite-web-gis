@@ -856,6 +856,12 @@ function htmlContentForExport() {
 	var currentLng = (map.getBounds()._northEast.lng+map.getBounds()._southWest.lng)/2
 
 	var tmpHtmlForExport = fixtureExportHtmlTemplate +
+	'<div style="margin: 10px 0;">' +
+    '    <input id="searchInput" type="text" placeholder="Rechercher par nom ou ID...">' +
+    '    <button onclick="validateSearch()">Rechercher</button>' +
+    '    <button onclick="resetSearch()">Réinitialiser</button>' +
+    '    <span id="searchResults"></span>' +
+    '</div>' +
 	'<script>' +
 	`
 		markersJsonGlobal = `+JSON.stringify(markersJsonGlobal)+`;
@@ -940,6 +946,43 @@ function htmlContentForExport() {
 				markers[markerId] = new L.marker([latitude,longitude], paramCustomMarkerIcon).bindPopup(label + '</br>').addTo(map);
 			}
 		}
+
+		function validateSearch() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            if (!query) {
+                alert("Veuillez saisir un terme de recherche");
+                return;
+            }
+
+            // Nettoie les marqueurs de la carte
+            markers.forEach(marker => map.removeLayer(marker));
+
+            // Filtre les marqueurs dont le popup contient le texte recherché
+            const results = markers.filter(marker => {
+                const popupContent = marker.getPopup()?.getContent()?.toLowerCase() || "";
+                return popupContent.includes(query);
+            });
+
+            // Affiche uniquement les marqueurs trouvés
+            results.forEach(marker => marker.addTo(map));
+
+            if (results.length === 0) {
+                document.getElementById('searchResults').textContent = "Aucun résultat trouvé";
+                return;
+            }
+
+            // Centre la carte sur les résultats
+            map.fitBounds(L.featureGroup(results).getBounds());
+            document.getElementById('searchResults').textContent = \`\${results.length} résultat(s) trouvé(s)\`;
+        }
+
+        function resetSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('searchResults').textContent = '';
+
+            // Réaffiche tous les marqueurs
+            markers.forEach(marker => marker.addTo(map));
+        }
 	` +
 	'</script>';
 
@@ -981,4 +1024,5 @@ function kmlContentForExport() {
 	;
 
 	return tmpKmlForExport;
+
 }
