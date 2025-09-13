@@ -16,6 +16,12 @@
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css" />
 		<script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"></script>
 		<link rel="stylesheet" type="text/css" href="assets/css/style.css" />
+		<div>
+			<input id="searchInput" type="text" placeholder="Rechercher par nom ou ID...">
+			<button onclick="validateSearch()">Rechercher</button>
+			<button onclick="resetSearch()">Réinitialiser</button>
+			<span id="searchResults"></span>
+		</div>
 		<div id="map_research" style="z-index: 0"></div>
 		 </br>
 		 </br>
@@ -160,3 +166,4 @@
 		</div>
 	</section>
 </html>
+
