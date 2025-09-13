@@ -66,25 +66,16 @@ function validateSearch() {
         alert("Veuillez saisir un terme de recherche");
         return;
     }
-
-    // Nettoie les marqueurs de la carte
     markers.forEach(marker => map.removeLayer(marker));
-
-    // Filtre les marqueurs dont le popup contient le texte recherché
     const results = markers.filter(marker => {
         const popupContent = marker.getPopup()?.getContent()?.toLowerCase() || "";
         return popupContent.includes(query);
     });
-
-    // Affiche uniquement les marqueurs trouvés
     results.forEach(marker => marker.addTo(map));
-
     if (results.length === 0) {
         document.getElementById('searchResults').textContent = "Aucun résultat trouvé";
         return;
     }
-
-    // Centre la carte sur les résultats
     map.fitBounds(L.featureGroup(results).getBounds());
     document.getElementById('searchResults').textContent = `${results.length} résultat(s) trouvé(s)`;
 }
@@ -92,8 +83,5 @@ function validateSearch() {
 function resetSearch() {
     document.getElementById('searchInput').value = '';
     document.getElementById('searchResults').textContent = '';
-
-    // Réaffiche tous les marqueurs
     markers.forEach(marker => marker.addTo(map));
 }
-
