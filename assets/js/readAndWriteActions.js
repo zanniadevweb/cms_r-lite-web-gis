@@ -868,6 +868,8 @@ function htmlContentForExport() {
 
 		isUsingDefaultMarkers = markersJsonGlobal !== null ? false : true;
 
+  		isUsingCustomIcon = `+JSON.stringify(isUsingCustomIcon)+`;
+
 		markers = [];
 
 		var map = L.map('map').setView([`+currentLat+`,`+currentLng+`], `+currentZoom+`);
@@ -931,14 +933,27 @@ function htmlContentForExport() {
 		}
 
 		function createPoint(latitude, longitude, label, markerId) {
-			if (markersJsonGlobal !== null && markersJsonGlobal[markerId] !== undefined && !(markersJsonGlobal[markerId].customMarkerIcon)) {
+			if (isUsingCustomIcon === true && markersJsonGlobal !== null && markersJsonGlobal[markerId] !== undefined && markersJsonGlobal[markerId].customMarkerIcon) {
+				var customMarkerIcon = L.icon({
+					iconUrl: markersJsonGlobal[markerId].customMarkerIcon,
+					// shadowUrl: 'leaf-shadow.png',
+				
+					iconSize:     [20, 30], // size of the icon
+					// shadowSize:   [50, 64], // size of the shadow
+					// iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+					// shadowAnchor: [4, 62],  // the same for the shadow
+					// popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+				});
+				var paramCustomMarkerIcon = {icon: customMarkerIcon};
+				markers[markerId] = new L.marker([latitude,longitude], paramCustomMarkerIcon).bindPopup(label + '</br>').addTo(map);
+			} else if (markersJsonGlobal !== null && markersJsonGlobal[markerId] !== undefined && markersJsonGlobal[markerId].fillColor) {
 				var paramCustomMarkerIcon = {  
-					fillColor: markersJsonGlobal[markerId].fillColor,
-					fillOpacity: markersJsonGlobal[markerId].fillOpacity,
-					color: markersJsonGlobal[markerId].borderColor,
-					weight: markersJsonGlobal[markerId].borderWeight,
-					radius: markersJsonGlobal[markerId].circleRadius,
-					stroke: markersJsonGlobal[markerId].hasBorder,
+					fillColor: markersJsonGlobal[markerId].fillColor, // '#3CC1F1'
+					fillOpacity: markersJsonGlobal[markerId].fillOpacity, // 1.0
+					color: markersJsonGlobal[markerId].borderColor, // black
+					weight: markersJsonGlobal[markerId].borderWeight,  // 0.2
+					radius: markersJsonGlobal[markerId].circleRadius, // 2000
+					stroke: markersJsonGlobal[markerId].hasBorder     // true,
 				}
 				markers[markerId] = new L.circle([latitude,longitude], paramCustomMarkerIcon).bindPopup(label + '</br>').addTo(map);
 			} else {
@@ -1015,4 +1030,5 @@ function kmlContentForExport() {
 	return tmpKmlForExport;
 
 }
+
 
