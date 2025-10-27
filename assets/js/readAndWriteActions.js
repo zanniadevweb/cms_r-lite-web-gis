@@ -864,6 +864,7 @@ function htmlContentForExport() {
     '</div>' +
 	'<script>' +
 	`
+		window.jsonValues = `+JSON.stringify(window.jsonValues || [])+`;
 		markersJsonGlobal = `+JSON.stringify(markersJsonGlobal)+`;
 
 		isUsingDefaultMarkers = markersJsonGlobal !== null ? false : true;
@@ -960,6 +961,44 @@ function htmlContentForExport() {
 				var customMarkerIcon = ""
 				markers[markerId] = new L.marker([latitude,longitude], paramCustomMarkerIcon).bindPopup(label + '</br>').addTo(map);
 			}
+			if (isUsingLabelsForMarkers[0] && isUsingLabelsForMarkers[1]) {
+				var labelText = '';
+				labelText = window.jsonValues[Number(markerId) + 1][isUsingLabelsForMarkers[1]] || '';
+				if (labelText) {
+					markers[markerId].bindTooltip(labelText, {
+						permanent: true,
+						direction: 'right',
+						offset: [8, 0],
+						className: 'marker-label'
+					});
+				}
+			(function insertMarkerLabelStyle(){
+			if (document.getElementById('marker-label-style')) return;
+                var css = [
+                  ".leaflet-tooltip.marker-label, .marker-label {",
+                  "  background: transparent !important;",
+                  "  border: none !important;",
+                  "  box-shadow: none !important;",
+                  "  color: #000 !important;",
+                  "  font-weight: 700 !important;",
+                  "  padding: 0 6px !important;",
+                  "  white-space: nowrap;",
+                  "  pointer-events: none;",
+                  "  font-size: 13px;",
+                  "  line-height: 1;",
+                  "  text-shadow: none !important;",
+                  "}",
+                  ".leaflet-tooltip.marker-label::before, .marker-label::before {",
+                  "  display: none !important;",
+                  "}"
+                ].join('\\n');
+				var style = document.createElement('style');
+				style.id = 'marker-label-style';
+				style.type = 'text/css';
+				style.appendChild(document.createTextNode(css));
+				document.head.appendChild(style);
+			})();
+			}
 		}
 
 		function validateSearch() {
@@ -1030,5 +1069,6 @@ function kmlContentForExport() {
 	return tmpKmlForExport;
 
 }
+
 
 
