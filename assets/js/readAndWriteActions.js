@@ -871,6 +871,8 @@ function htmlContentForExport() {
 
   		isUsingCustomIcon = `+JSON.stringify(isUsingCustomIcon)+`;
 
+		isUsingLabelsForMarkers = `+JSON.stringify(isUsingLabelsForMarkers)+`;
+
 		markers = [];
 
 		var map = L.map('map').setView([`+currentLat+`,`+currentLng+`], `+currentZoom+`);
@@ -1069,6 +1071,7 @@ function kmlContentForExport() {
 	return tmpKmlForExport;
 
 }
+
 
 
 
