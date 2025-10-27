@@ -2,6 +2,7 @@
 startingViewLatLng = [40.421190, 15.005673];
 startingViewZoom = 4;
 isUsingCustomIcon = true;
+isUsingLabelsForMarkers = [false, 2];
 
 customMapLegend = 
 '<label id="checkboxRegionLabelState" class="input-check"><input onchange="change_state(this)" onclick="changeRegionLabelState()" type="checkbox" style="font-size:15px"/> <span id="textRegionLabelState">- OFF LABELS REGION -</span></label><br>'
