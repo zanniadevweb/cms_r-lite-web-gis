@@ -213,7 +213,22 @@ function createPoint(latitude, longitude, label, markerId) {
 	}
 	if (isUsingLabelsForMarkers[0] && isUsingLabelsForMarkers[1]) {
 		var labelText = '';
-		labelText = window.jsonValues[Number(markerId) + 1][isUsingLabelsForMarkers[1]] || '';
+        try {
+            var row = window.jsonValues && window.jsonValues[Number(markerId) + 1];
+            var parts = [];
+            for (var i = 1; i < isUsingLabelsForMarkers.length; i++) {
+                var col = isUsingLabelsForMarkers[i];
+                if (col === null || col === undefined || col === '') continue;
+                var colIndex = Number(col);
+                if (isNaN(colIndex)) continue;
+                if (row && row[colIndex] !== undefined && String(row[colIndex]).trim() !== '') {
+                    parts.push(String(row[colIndex]).trim());
+                }
+            }
+            // fallback if nothing collected
+            if (parts.length === 0 && row) parts.push(String(row[2] || row[1] || row[0] || '').trim());
+            labelText = parts.join(' - ');
+        } catch (e) { labelText = ''; }
 		if (labelText) {
 			markers[markerId].bindTooltip(labelText, {
 				permanent: true,
@@ -226,11 +241,9 @@ function createPoint(latitude, longitude, label, markerId) {
     	if (document.getElementById('marker-label-style')) return;
 			var css = `
 			.leaflet-tooltip.marker-label, .marker-label {
-			background: transparent !important;
 			border: none !important;
 			box-shadow: none !important;
 			color: #000 !important;
-			font-size: 30px !important;
 			padding: 0 6px !important;
 			white-space: nowrap;
 			pointer-events: none;
