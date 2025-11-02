@@ -355,18 +355,6 @@ function change_state(obj){
 	}
 }
 
-function changeScreenSize() {
-	var checkboxScreenSize = document.getElementById('checkboxScreenSize');
-	var textScreenSize = document.getElementById('textScreenSize');
-	if (checkboxScreenSize.classList.contains('checked')) {
-		document.getElementById('map_research').style.height = '100%'
-		changeTextInput(textScreenSize, '-> REDUCE MAP <- ')
-	} else {
-		document.getElementById('map_research').style.height = '500px'
-		changeTextInput(textScreenSize, '<- ENLARGE MAP ->')
-	}
-}
-
 var firstChangeRegionLabelState = true;
 function changeRegionLabelState() {
 	var checkboxRegionLabelState = document.getElementById('checkboxRegionLabelState');
