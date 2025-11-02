@@ -97,10 +97,11 @@ function fillLegend() {
 	var localLineValue = '';
 	var coordInsideLabelPlanesLoop = '';
 	legend.onAdd = function(map) { 
-		var div = L.DomUtil.create("div", "legend");
+		div = L.DomUtil.create("div", "legend");
 		div.style = "overflow-y:scroll; overflow-x:hidden; height:500px;";
-		div.innerHTML += "<h4>Map Actions</h4><br>";
-		div.innerHTML += '<label id="checkboxScreenSize" class="input-check"><input onchange="change_state(this)" onclick="changeScreenSize()" type="checkbox" style="font-size:15px"/> <span id="textScreenSize">-> REDUCE MAP <-</span></label><br>'
+		div.innerHTML += '<div class="legend-header" style="display:flex;justify-content:space-between;align-items:center"><button id="legendToggleBtn" onclick="toggleLegend()" title="Ouvrir / Fermer le panneau" style="background: rgba(0, 0, 0, 0.4);border:none;font-size:16px;cursor:pointer;padding-left:15px;padding-right:15px">Hide Panel ▾</button></div><br>';
+		div.innerHTML += '<div style="margin-top:6px"><h4 style="margin:0">Map Actions</h4></div><br>';
+		div.innerHTML += '<div id="legendContent" style="display:block;">';
 		div.innerHTML += '<button id="tileMapLayerOpenStreetMap" onclick="tileMapLayerOpenStreetMap()" style="background: #d93616; font-size:15px; background-image:url(\'https://tile.openstreetmap.org/5/15/11.png\')">Open Street Map</button><br>'
 		div.innerHTML += '<button id="tileMapLayerOpenTopoMap" onclick="tileMapLayerOpenTopoMap()" style="background: #d93616; font-size:15px; background-image:url(\'https://c.tile.opentopomap.org/5/15/11.png\')">Open Topo Map</button><br>'
 		div.innerHTML += '<button id="tileMapLayerSatellite" onclick="tileMapLayerSatellite()" style="background: #d93616; font-size:15px; background-image:url(\'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/11/15\')">Satellite Map (ESRI)</button><br>'
@@ -120,6 +121,32 @@ function fillLegend() {
 	};
 
 	legend.addTo(map);
+	toggleLegend();
+}
+
+function toggleLegend() {
+    var legend = document.getElementsByClassName('legend')[0];
+    if (!legend) return;
+    var content = document.getElementById('legendContent');
+    var btn = document.getElementById('legendToggleBtn');
+    if (!content || !btn) return;
+
+    // collapsed state stored in data attribute to avoid relying on external CSS
+    if (legend.dataset.collapsed === "1") {
+        // expand
+        legend.style.height = '500px';
+        legend.style.overflowY = 'scroll';
+        content.style.display = 'block';
+        btn.textContent = 'Hide Panel ▾';
+        delete legend.dataset.collapsed;
+    } else {
+        // collapse to minimal height
+        legend.style.height = '70px';
+        legend.style.overflow = 'hidden';
+        content.style.display = 'none';
+        btn.textContent = 'Open Panel ▸';
+        legend.dataset.collapsed = "1";
+    }
 }
 
 function fillPolygons() {
